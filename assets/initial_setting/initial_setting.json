@@ -1,0 +1,26 @@
+{
+    "app_name": "mlm_demo_frontend_flutter",
+    "default_theme": "dark",
+    "font_family": "Inter",
+    "app_language": "en",
+    "app_version": "1.0.0",
+    "enable_version": "true",
+    "light_theme": {
+        "primary_color": "#8B5CF6",
+        "primary_dark_color": "#7C3AED",
+        "accent_color": "#2DD4BF",
+        "accent_dark_color": "#14B8A6",
+        "scaffold_color": "#F8FAFC",
+        "text_color": "#1F2937",
+        "hint_color": "#6B7280"
+    },
+    "dark_theme": {
+        "primary_color": "#8B5CF6",
+        "primary_dark_color": "#7C3AED",
+        "accent_color": "#2DD4BF",
+        "accent_dark_color": "#14B8A6",
+        "scaffold_color": "#0F172A",
+        "text_color": "#E2E8F0",
+        "hint_color": "#94A3B8"
+    }
+}
