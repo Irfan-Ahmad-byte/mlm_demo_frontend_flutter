@@ -11,23 +11,38 @@ class AppColors {
   static Color get shadowColor => UI.parseColor("#000000");
 
   static Color get primaryColor => _getThemeColor(
-        InitialSettingServices.to.settingmodel.lightTheme?.primaryColor,
+        InitialSettingServices.to.activeTheme.primaryColor,
         fallback: "#8B5CF6",
       );
 
+  static Color get primaryDarkColor => _getThemeColor(
+        InitialSettingServices.to.activeTheme.primaryDarkColor,
+        fallback: "#7C3AED",
+      );
+
   static Color get secondaryColor => _getThemeColor(
-        InitialSettingServices.to.settingmodel.lightTheme?.accentColor,
+        InitialSettingServices.to.activeTheme.accentColor,
         fallback: "#2DD4BF",
       );
 
+  static Color get secondaryDarkColor => _getThemeColor(
+        InitialSettingServices.to.activeTheme.accentDarkColor,
+        fallback: "#14B8A6",
+      );
+
+  static Color get scaffoldColor => _getThemeColor(
+        InitialSettingServices.to.activeTheme.scaffoldColor,
+        fallback: "#0F172A",
+      );
+
   static Color get hintColor => _getThemeColor(
-        InitialSettingServices.to.settingmodel.lightTheme?.hintColor,
-        fallback: "#CBD5E1",
+        InitialSettingServices.to.activeTheme.hintColor,
+        fallback: "#94A3B8",
       );
 
   static Color get textColor => _getThemeColor(
-        InitialSettingServices.to.settingmodel.lightTheme?.textColor,
-        fallback: "#1F2937",
+        InitialSettingServices.to.activeTheme.textColor,
+        fallback: "#E2E8F0",
       );
 
   static Color get bodyColor => UI.parseColor("#FEF4EC");

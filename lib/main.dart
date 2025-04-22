@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
           },
           child: GetMaterialApp(
             title: kAppName,
+            darkTheme: Get.find<InitialSettingServices>().getDarkTheme(),
             themeMode: Get.find<InitialSettingServices>().getThemeMode(),
             theme: Get.find<InitialSettingServices>().getLightTheme(),
             getPages: AppPages.pages,

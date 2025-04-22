@@ -13,10 +13,19 @@ class InitialSettingServices extends GetxService {
   late InitialSettingModel settingmodel;
 
   Future<InitialSettingServices> init() async {
-    final response = await getJsonFile(kInitialSettingJson);
-    if (response != null) {
-      settingmodel = InitialSettingModel.fromJson(response);
+    try {
+      final response = await getJsonFile(kInitialSettingJson);
+      print("InitialSetting JSON loaded: $response"); // 👈 DEBUG
+
+      if (response != null) {
+        settingmodel = InitialSettingModel.fromJson(response);
+        print("Theme Loaded: ${settingmodel.defaultTheme}"); // 👈 DEBUG
+      }
+    } catch (e, stack) {
+      print("🔥 Error loading initial settings: $e");
+      print(stack);
     }
+
     return this;
   }
 
@@ -26,19 +35,7 @@ class InitialSettingServices extends GetxService {
 
   ThemeMode getThemeMode() {
     final mode = settingmodel.defaultTheme?.toLowerCase();
-    if (mode == 'dark') {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle.light.copyWith(
-          systemNavigationBarColor: Colors.black,
-        ),
-      );
-      return ThemeMode.dark;
-    }
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.light.copyWith(
-        systemNavigationBarColor: Colors.white,
-      ),
-    );
+    if (mode == 'dark') return ThemeMode.dark;
     return ThemeMode.light;
   }
 
@@ -46,35 +43,35 @@ class InitialSettingServices extends GetxService {
     final t = settingmodel.lightTheme ?? LightTheme();
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: UI.parseColor(t.primaryColor ?? "#8B5CF6"),
+        statusBarColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
         statusBarBrightness: Brightness.dark,
-        systemNavigationBarColor: UI.parseColor(t.primaryColor ?? "#8B5CF6"),
+        systemNavigationBarColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
       ),
     );
 
     return ThemeData(
       fontFamily: fontFamily,
       brightness: Brightness.light,
-      primaryColor: UI.parseColor(t.primaryColor ?? "#8B5CF6"),
-      primaryColorDark: UI.parseColor(t.primaryDarkColor ?? "#7C3AED"),
-      scaffoldBackgroundColor: UI.parseColor(t.scaffoldColor ?? "#F8FAFC"),
-      dividerColor: UI.parseColor(t.hintColor ?? "#CBD5E1"),
-      focusColor: UI.parseColor(t.accentColor ?? "#2DD4BF"),
-      hintColor: UI.parseColor(t.hintColor ?? "#94A3B8"),
+      primaryColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
+      primaryColorDark: UI.parseColor(t.primaryDarkColor ?? "#194d5c"),
+      scaffoldBackgroundColor: UI.parseColor(t.scaffoldColor ?? "#ffffff"),
+      dividerColor: UI.parseColor(t.hintColor ?? "#c0dde2"),
+      focusColor: UI.parseColor(t.accentColor ?? "#aadfe4"),
+      hintColor: UI.parseColor(t.hintColor ?? "#c0dde2"),
       checkboxTheme: CheckboxThemeData(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
       ),
       textSelectionTheme: TextSelectionThemeData(
-        cursorColor: UI.parseColor(t.accentColor ?? "#2DD4BF"),
-        selectionColor: UI.parseColor(t.accentColor ?? "#2DD4BF"),
-        selectionHandleColor: UI.parseColor(t.accentColor ?? "#2DD4BF"),
+        cursorColor: UI.parseColor(t.accentColor ?? "#aadfe4"),
+        selectionColor: UI.parseColor(t.accentColor ?? "#aadfe4"),
+        selectionHandleColor: UI.parseColor(t.accentColor ?? "#aadfe4"),
       ),
       colorScheme: ColorScheme.light(
-        primary: UI.parseColor(t.primaryColor ?? "#8B5CF6"),
-        secondary: UI.parseColor(t.accentColor ?? "#2DD4BF"),
+        primary: UI.parseColor(t.primaryColor ?? "#52a9b0"),
+        secondary: UI.parseColor(t.accentColor ?? "#aadfe4"),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: UI.parseColor(t.primaryColor ?? "#8B5CF6"),
+        backgroundColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
       ),
     );
   }
@@ -83,19 +80,20 @@ class InitialSettingServices extends GetxService {
     final t = settingmodel.darkTheme ?? LightTheme();
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: UI.parseColor(t.primaryColor ?? "#8B5CF6"),
+        statusBarColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
         statusBarBrightness: Brightness.light,
-        systemNavigationBarColor: UI.parseColor(t.primaryColor ?? "#8B5CF6"),
+        systemNavigationBarColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
       ),
     );
+
     return ThemeData.dark().copyWith(
       textTheme: Typography.material2021().black.apply(fontFamily: fontFamily),
-      primaryColor: UI.parseColor(t.primaryColor ?? "#8B5CF6"),
-      scaffoldBackgroundColor: UI.parseColor(t.scaffoldColor ?? "#0F172A"),
-      hintColor: UI.parseColor(t.hintColor ?? "#94A3B8"),
+      primaryColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
+      scaffoldBackgroundColor: UI.parseColor(t.scaffoldColor ?? "#102e46"),
+      hintColor: UI.parseColor(t.hintColor ?? "#c0dde2"),
       colorScheme: ColorScheme.dark(
-        primary: UI.parseColor(t.primaryColor ?? "#8B5CF6"),
-        secondary: UI.parseColor(t.accentColor ?? "#2DD4BF"),
+        primary: UI.parseColor(t.primaryColor ?? "#52a9b0"),
+        secondary: UI.parseColor(t.accentColor ?? "#aadfe4"),
       ),
     );
   }
@@ -104,7 +102,7 @@ class InitialSettingServices extends GetxService {
       ? (settingmodel.darkTheme ?? LightTheme())
       : (settingmodel.lightTheme ?? LightTheme());
 
-  String get appName => settingmodel.appName ?? 'MLM Demo';
+  String get appName => settingmodel.appName ?? 'GrowBro';
   String get appVersion => settingmodel.appVersion ?? '1.0.0';
   String get fontFamily => settingmodel.fontFamily ?? 'Inter';
 }

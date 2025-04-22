@@ -1,7 +1,6 @@
-
-
 import 'package:flutter/material.dart';
- 
+import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
+
 import '../../core/utils/app_colors.dart';
 import 'screen/login_screen.dart';
 
@@ -18,7 +17,11 @@ class LoginPage extends StatelessWidget {
         body: SizedBox(
           height: size.height,
           width: size.width,
-          child: LoginScreen(),
+          child: const ResponsiveWidget(
+            largescreen: LoginScreen(),
+            mediumscreen: LoginScreen(),
+            smallscreen: LoginScreen(),
+          ),
         ),
       ),
     );
