@@ -3,13 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/assets/app_icons.dart';
-import '../../../core/custom_widget/AppTextField.dart';
+import 'package:mlm_demo_frontend_flutter/app/routes/app_routes.dart';
+import '../../../core/custom_widget/app_text_field.dart';
 import '../../../core/custom_widget/app_button.dart';
 import '../../../core/utils/app_colors.dart';
-import '../controller/login_controller.dart';
 
 class LoginForm extends StatelessWidget {
-  final controller = Get.put(LoginController());
   final loginFormKey = GlobalKey<FormState>();
 
   LoginForm({super.key});
@@ -55,7 +54,7 @@ class LoginForm extends StatelessWidget {
               AppTextField(
                 label: 'Email',
                 hint: 'Enter your email',
-                controller: controller.emailController,
+                // controller: controller.emailController,
                 keyboardType: TextInputType.emailAddress,
                 icon: Icons.email,
                 validator: (value) {
@@ -71,7 +70,7 @@ class LoginForm extends StatelessWidget {
               AppTextField(
                 label: 'Password',
                 hint: 'Enter your password',
-                controller: controller.passwordController,
+                // controller: controller.passwordController,
                 isPassword: true,
                 icon: Icons.lock,
                 validator: (value) {
@@ -87,6 +86,7 @@ class LoginForm extends StatelessWidget {
               AppButton(
                 text: 'Log in',
                 onPressed: () {
+                  Get.offAllNamed(AppRoutes.index);
                   // if (loginFormKey.currentState!.validate()) {
                   //   controller.loginUser(
                   //     email: controller.emailController.text,

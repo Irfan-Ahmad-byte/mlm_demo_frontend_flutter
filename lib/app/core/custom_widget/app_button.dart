@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/utils/app_colors.dart';
+import '../utils/app_textstyle.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
@@ -9,6 +10,8 @@ class AppButton extends StatelessWidget {
   final IconData? icon;
   final Color? backgroundColor;
   final Color? textColor;
+  final double? height;
+  final double? width;
 
   const AppButton({
     super.key,
@@ -19,6 +22,8 @@ class AppButton extends StatelessWidget {
     this.icon,
     this.backgroundColor,
     this.textColor,
+    this.height,
+    this.width,
   });
 
   @override
@@ -27,8 +32,8 @@ class AppButton extends StatelessWidget {
     final Color fgColor = textColor ?? AppColors.blackColor;
 
     return SizedBox(
-      width: isFullWidth ? double.infinity : null,
-      height: 48,
+      width: isFullWidth ? double.infinity : width,
+      height: height ?? 48,
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
@@ -58,9 +63,9 @@ class AppButton extends StatelessWidget {
                   Text(
                     text,
                     style: TextStyle(
-                      color: fgColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 16,
+                      fontSize: FontSizeManager.getFontSize(context, 10),
+                      color: fgColor,
                     ),
                   ),
                 ],

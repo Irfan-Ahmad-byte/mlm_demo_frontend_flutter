@@ -11,47 +11,45 @@ class LoginScreen extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<LoginController>(
-        init: LoginController(),
-        builder: (controller) => SingleChildScrollView(
-            child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20.w,
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: ResponsiveWidget.isLargeScreen(context)
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 450.h,
+                        width: 180.w,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            scale: 1.0,
+                            image: AssetImage(AppImages.mlmSide),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 20.w),
+                    Expanded(child: LoginForm()),
+                  ],
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 40.h,
+                        horizontal: 20.w,
+                      ),
+                      child: LoginForm(),
+                    )
+                  ],
                 ),
-                child: ResponsiveWidget.isLargeScreen(context)
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 450.h,
-                              width: 180.w,
-                              decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      scale: 1.0,
-                                      image: AssetImage(
-                                        AppImages.mlmSide,
-                                      ),
-                                      fit: BoxFit.fill)),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          Expanded(child: LoginForm())
-                        ],
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 40.h,
-                              horizontal: 20.w,
-                            ),
-                            child: LoginForm(),
-                          )
-                        ],
-                      ))));
+        ),
+      ),
+    );
   }
 }

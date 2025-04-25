@@ -12,7 +12,7 @@ class AppColors {
 
   static Color get primaryColor => _getThemeColor(
         InitialSettingServices.to.activeTheme.primaryColor,
-        fallback: "#8B5CF6",
+        fallback: "#3A7F90",
       );
 
   static Color get primaryDarkColor => _getThemeColor(
@@ -39,7 +39,11 @@ class AppColors {
         InitialSettingServices.to.activeTheme.hintColor,
         fallback: "#94A3B8",
       );
-
+// #7CB9B7
+  static Color get containerColor => _getThemeColor(
+        InitialSettingServices.to.activeTheme.containerColor,
+        fallback: "#7CB9B7",
+      );
   static Color get textColor => _getThemeColor(
         InitialSettingServices.to.activeTheme.textColor,
         fallback: "#E2E8F0",

@@ -60,6 +60,7 @@ class LightTheme {
   String? scaffoldColor;
   String? textColor;
   String? hintColor;
+  String? containerColor;
 
   LightTheme({
     this.primaryColor,
@@ -69,6 +70,7 @@ class LightTheme {
     this.scaffoldColor,
     this.textColor,
     this.hintColor,
+    this.containerColor,
   });
 
   LightTheme.fromJson(Map<String, dynamic> json) {
@@ -79,6 +81,7 @@ class LightTheme {
     scaffoldColor = json['scaffold_color'];
     textColor = json['text_color'];
     hintColor = json['hint_color'];
+    containerColor = json['container_color'];
   }
 
   Map<String, dynamic> toJson() {
@@ -90,6 +93,7 @@ class LightTheme {
     data['scaffold_color'] = scaffoldColor;
     data['text_color'] = textColor;
     data['hint_color'] = hintColor;
+    data['container_color'] = containerColor;
     return data;
   }
 }
