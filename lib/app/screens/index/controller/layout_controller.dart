@@ -1,20 +1,21 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 
 class LayoutController extends GetxController {
-  final GlobalKey bonusKey = GlobalKey();
-  var bonusWidth = 0.0.obs;
+  final RxDouble bonusWidth = 0.0.obs;
+  final RxString selectedBonusTab = ''.obs;
+  final RxBool isBonusClicked = false.obs;
 
   void calculateBonusWidth() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final context = bonusKey.currentContext;
-      if (context != null) {
-        final box = context.findRenderObject() as RenderBox?;
-        if (box != null && box.hasSize) {
-          bonusWidth.value = box.size.width;
-          print("Bonus container width: ${bonusWidth.value}");
-        }
-      }
-    });
+    // Width calculation handled in FloatingBonusCards after layout
+  }
+
+  void selectBonusTab(String tab) {
+    selectedBonusTab.value = tab;
+    isBonusClicked.value = true;
+  }
+
+  void clearBonusTab() {
+    selectedBonusTab.value = "";
+    isBonusClicked.value = false;
   }
 }

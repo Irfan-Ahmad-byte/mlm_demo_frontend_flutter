@@ -3,224 +3,271 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/app_text_field.dart';
-import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/app_button.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
 import 'package:mlm_demo_frontend_flutter/app/screens/index/controller/layout_controller.dart';
-
+import '../../screens/index/controller/index_controller.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_textstyle.dart';
+import 'floating_bonus_cards.dart';
 
 class CustomHeader extends StatelessWidget {
-  CustomHeader({super.key});
-  final layoutController = Get.put(LayoutController());
+  CustomHeader({super.key, required this.controller});
+  final LayoutController layoutController = Get.find<LayoutController>();
+
+  final IndexController controller;
 
   @override
   Widget build(BuildContext context) {
-    print(Get.width);
+    if (ResponsiveWidget.issmallscreen(context) ||
+        ResponsiveWidget.isCustomScreen(context)) {
+      return MobileHeader(layoutController: layoutController);
+    } else if (ResponsiveWidget.ismediumscreen(context) ||
+        ResponsiveWidget.isLargeScreen(context)) {
+      return DesktopHeader(
+        layoutController: layoutController,
+        controller: controller,
+      );
+    } else {
+      return const SizedBox.shrink(); // fallback
+    }
+  }
+}
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      layoutController.calculateBonusWidth();
-    });
+// ------------------------------------------------------------------
+// 📱 Mobile Header
+// ------------------------------------------------------------------
+class MobileHeader extends StatelessWidget {
+  final LayoutController layoutController;
+  const MobileHeader({super.key, required this.layoutController});
 
-    return Stack(
+  @override
+  Widget build(BuildContext context) {
+    return Column(
       children: [
-        /// Main Background Layer
-        Column(
-          children: [
-            Container(
-              color: AppColors.primaryColor.withOpacity(0.8),
-              padding: EdgeInsets.only(top: 20.h, bottom: 20.h),
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// Profile Row
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Row(
+        Container(
+          color: AppColors.primaryColor,
+          padding: EdgeInsets.only(
+            top: 20.h,
+          ),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Profile
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Row(
+                  children: [
+                    CircleAvatar(radius: 24.r, backgroundColor: Colors.purple),
+                    SizedBox(width: 12.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CircleAvatar(
-                          radius: 24.r,
-                          backgroundColor: Colors.purple,
-                        ),
-                        SizedBox(width: 12.w),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Username",
-                                style: TextStyle(
-                                    fontSize: FontSizeManager.getFontSize(
-                                        context, 16),
-                                    color: AppColors.blackColor)),
-                            Text("Account No",
-                                style: TextStyle(
-                                    fontSize: FontSizeManager.getFontSize(
-                                        context, 14),
-                                    color: AppColors.blackColor)),
-                          ],
-                        ),
+                        Text("Username",
+                            style: TextStyle(
+                                fontSize:
+                                    FontSizeManager.getFontSize(context, 16),
+                                color: AppColors.blackColor)),
+                        Text("Account No",
+                            style: TextStyle(
+                                fontSize:
+                                    FontSizeManager.getFontSize(context, 14),
+                                color: AppColors.blackColor)),
                       ],
                     ),
-                  ),
-
-                  SizedBox(height: 16.h),
-
-                  ResponsiveWidget.isLargeScreen(context) ||
-                          ResponsiveWidget.ismediumscreen(context)
-                      ? Divider(
-                          color: AppColors.scaffoldColor,
-                          thickness: 10,
-                        )
-                      : Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 2.h),
-                          color: AppColors.primaryColor,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: _mobileBonusCard(context,
-                                    title: "Bonus", onPressed: () {}),
-                              ),
-                              SizedBox(width: 8.w),
-                              Expanded(
-                                child: _mobileBonusCard(context,
-                                    title: "Referal", onPressed: () {}),
-                              ),
-                              SizedBox(width: 8.w),
-                              Expanded(
-                                child: _mobileBonusCard(context,
-                                    title: "Team Bonus", onPressed: () {}),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                  SizedBox(height: 12.h),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Row(
-                      children: [
-                        /// URL Input
-                        const Expanded(
-                          child: AppTextField(
-                            label: "URL Shortner",
-                            hint: "Enter your URL",
-                            backgroundColor: AppColors.whiteColor,
-                            icon: Icons.link,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-
-                        /// Match Width of Bonus Container
-                        ResponsiveWidget.isLargeScreen(context) ||
-                                ResponsiveWidget.ismediumscreen(context)
-                            ? Obx(() => SizedBox(
-                                  width: layoutController.bonusWidth.value == 0
-                                      ? 300.w // fallback
-                                      : layoutController.bonusWidth.value,
-                                ))
-                            : const SizedBox.shrink()
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            ResponsiveWidget.isLargeScreen(context) ||
-                    ResponsiveWidget.ismediumscreen(context)
-                ? Container(height: 37.h, color: AppColors.scaffoldColor)
-                : const SizedBox.shrink()
-          ],
-        ),
 
-        ResponsiveWidget.isLargeScreen(context) ||
-                ResponsiveWidget.ismediumscreen(context)
-            ? Positioned(
-                top: 80.h,
-                right: 0.w,
-                child: FloatingBonusCards(layoutController: layoutController),
-              )
-            : const SizedBox.shrink()
+              SizedBox(height: 16.h),
+
+              // Inline Bonus Buttons
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 4.h),
+                color: AppColors.containerColor.withOpacity(0.8),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Obx(() {
+                    final selected = layoutController.selectedBonusTab.value;
+
+                    final defaultButtons = [
+                      {'title': "Bonus", 'key': 'bonus'},
+                      {'title': "Referral", 'key': 'referral'},
+                      {'title': "Team Bonus", 'key': 'teamBonus'},
+                    ];
+
+                    final networkButton = {
+                      'title': "Network",
+                      'key': 'network'
+                    };
+
+                    List<Map<String, String>> buttons;
+
+                    if (selected == 'bonus') {
+                      buttons = [
+                        networkButton,
+                        defaultButtons[1],
+                        defaultButtons[2],
+                      ];
+                    } else if (selected == 'referral') {
+                      buttons = [
+                        defaultButtons[0],
+                        networkButton,
+                        defaultButtons[2],
+                      ];
+                    } else if (selected == 'teamBonus') {
+                      buttons = [
+                        defaultButtons[0],
+                        defaultButtons[1],
+                        networkButton,
+                      ];
+                    } else {
+                      buttons = defaultButtons;
+                    }
+
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Row(
+                        children: buttons.map((btn) {
+                          return Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  right: btn != buttons.last ? 8.w : 0),
+                              child: _mobileBonusCard(
+                                context,
+                                title: btn['title']!,
+                                onPressed: () {
+                                  layoutController.selectBonusTab(btn['key']!);
+                                },
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+
+              // URL Shortener (Always)
+            ],
+          ),
+        ),
       ],
     );
   }
 }
 
-Widget _buildBonusCard(
-  BuildContext context, {
-  required String title,
-  required String amount,
-  String? iconPath,
-  bool boxShadow = true,
-}) {
-  return Container(
-    padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 3.w),
-    decoration: BoxDecoration(
-      color: AppColors.containerColor,
-      borderRadius: BorderRadius.circular(24.r),
-      boxShadow: boxShadow
-          ? [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(4, 6),
-              ),
-            ]
-          : [],
-    ),
-    width: 150,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CircleAvatar(
-          radius: 20.r,
-          backgroundColor: AppColors.secondaryColor,
-          child: iconPath != null && iconPath.endsWith('.svg')
-              ? SvgPicture.asset(
-                  iconPath,
-                  width: 20.w,
-                  height: 20.h,
-                )
-              : Text(
-                  '\$',
-                  style: TextStyle(
-                    fontSize: FontSizeManager.getFontSize(context, 12),
-                    color: AppColors.blackColor,
+// ------------------------------------------------------------------
+// 🖥️ Desktop Header
+// ------------------------------------------------------------------
+class DesktopHeader extends StatelessWidget {
+  final LayoutController layoutController;
+  final IndexController controller;
+
+  const DesktopHeader(
+      {super.key, required this.layoutController, required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: AppColors.scaffoldColor,
+      height: 180.h,
+      width: double.infinity,
+      child: Stack(
+        clipBehavior: Clip.none, // 🛑 Important: Allow overflow
+        children: [
+          /// 🟦 Background Profile + URL + Placeholder
+          Container(
+            padding: EdgeInsets.only(top: 20.h),
+            color: AppColors.primaryColor.withOpacity(0.8),
+            height: 140.h, // 🛑 Small height for header only
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// 🟣 Profile Info
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 26.h),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                            radius: 24.r, backgroundColor: Colors.purple),
+                        SizedBox(height: 8.h),
+                        Column(
+                          children: [
+                            Text(
+                              "Username",
+                              style: TextStyle(
+                                fontSize:
+                                    FontSizeManager.getFontSize(context, 16),
+                                color: AppColors.blackColor,
+                              ),
+                            ),
+                            Text(
+                              "Account No",
+                              style: TextStyle(
+                                fontSize:
+                                    FontSizeManager.getFontSize(context, 14),
+                                color: AppColors.blackColor,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-        ),
-        SizedBox(height: 12.h),
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: FontSizeManager.getFontSize(context, 12),
-            fontWeight: FontWeight.bold,
-            color: AppColors.blackColor,
+
+                  SizedBox(width: 20.w),
+
+                  /// 🔵 URL Shortener Field
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: const AppTextField(
+                        label: "URL Shortner",
+                        hint: "Enter your URL",
+                        backgroundColor: AppColors.whiteColor,
+                        icon: Icons.link,
+                      ),
+                    ),
+                  ),
+
+                  /// 🟢 Placeholder for Floating Cards
+                  Obx(() => SizedBox(
+                        width: layoutController.bonusWidth.value == 0
+                            ? 300.w
+                            : layoutController.bonusWidth.value,
+                        height: 10.h,
+                      )),
+                ],
+              ),
+            ),
           ),
-        ),
-        Text(
-          amount,
-          style: TextStyle(
-            fontSize: FontSizeManager.getFontSize(context, 10),
-            color: AppColors.blackColor,
+
+          /// 🟢 Floating Bonus Cards (Animated)
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            top: 20.h, // 🛑 floating outside header
+            right: 0.w,
+            child: FloatingBonusCards(
+              layoutController: layoutController,
+              controller: controller,
+            ),
           ),
-        ),
-        SizedBox(height: 12.h),
-        AppButton(
-          text: 'Details',
-          onPressed: () {},
-          width: 50,
-          height: 30.h,
-          backgroundColor: AppColors.whiteColor,
-        )
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }
 
+// ------------------------------------------------------------------
+// 📦 Mobile Bonus Card widget
+// ------------------------------------------------------------------
 Widget _mobileBonusCard(
   BuildContext context, {
   required String title,
@@ -230,7 +277,6 @@ Widget _mobileBonusCard(
 }) {
   return StatefulBuilder(
     builder: (context, setState) {
-      // 👇 MOVE this outside the builder, to preserve state
       final isHoveredNotifier = ValueNotifier(false);
 
       return MouseRegion(
@@ -245,7 +291,7 @@ Widget _mobileBonusCard(
               padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 10.h),
               decoration: BoxDecoration(
                 color: isHovered
-                    ? AppColors.containerColor.withOpacity(0.2) // define this
+                    ? AppColors.containerColor.withOpacity(0.2)
                     : AppColors.containerColor,
                 borderRadius: BorderRadius.circular(14.r),
                 boxShadow: boxShadow
@@ -261,7 +307,6 @@ Widget _mobileBonusCard(
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CircleAvatar(
@@ -276,10 +321,8 @@ Widget _mobileBonusCard(
                           : Text(
                               '\$',
                               overflow: TextOverflow.ellipsis,
-                              maxLines: 1, // limit to 1 line
-                              // shows "..." at the end
-                              softWrap:
-                                  false, // avoid wrapping to the next line
+                              maxLines: 1,
+                              softWrap: false,
                               style: TextStyle(
                                 fontSize:
                                     FontSizeManager.getFontSize(context, 12),
@@ -309,57 +352,4 @@ Widget _mobileBonusCard(
       );
     },
   );
-}
-
-class FloatingBonusCards extends StatefulWidget {
-  final LayoutController layoutController;
-
-  const FloatingBonusCards({super.key, required this.layoutController});
-
-  @override
-  State<FloatingBonusCards> createState() => _FloatingBonusCardsState();
-}
-
-class _FloatingBonusCardsState extends State<FloatingBonusCards> {
-  final GlobalKey _localKey = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final ctx = _localKey.currentContext;
-      if (ctx != null) {
-        final box = ctx.findRenderObject() as RenderBox;
-        widget.layoutController.bonusWidth.value = box.size.width;
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      key: _localKey,
-      decoration: BoxDecoration(
-        color: AppColors.containerColor,
-        borderRadius: BorderRadius.circular(24.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.15),
-            blurRadius: 10,
-            offset: const Offset(4, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          _buildBonusCard(context,
-              title: 'Bonus', amount: '1000', boxShadow: false),
-          SizedBox(width: 8.w),
-          _buildBonusCard(context, title: 'Referral', amount: '500'),
-          SizedBox(width: 8.w),
-          _buildBonusCard(context, title: 'Team Bonus', amount: '2000'),
-        ],
-      ),
-    );
-  }
 }

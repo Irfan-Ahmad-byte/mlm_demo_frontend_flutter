@@ -34,6 +34,10 @@ class AppColors {
         InitialSettingServices.to.activeTheme.scaffoldColor,
         fallback: "#0F172A",
       );
+  static Color get headerColor => _getThemeColor(
+        InitialSettingServices.to.activeTheme.scaffoldColor,
+        fallback: "#45909b",
+      );
 
   static Color get hintColor => _getThemeColor(
         InitialSettingServices.to.activeTheme.hintColor,
