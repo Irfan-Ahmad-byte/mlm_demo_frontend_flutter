@@ -28,9 +28,10 @@ class LoginForm extends StatelessWidget {
               SvgPicture.asset(
                 AppIcons.logo,
                 width: 20.w,
-                height: 64,
+                height: 64.h,
+                color: AppColors.secondaryColor,
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 30.h),
               Text(
                 'Log in',
                 style: TextStyle(
@@ -45,7 +46,7 @@ class LoginForm extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: AppColors.textColor,
+                  color: AppColors.greyColor,
                 ),
               ),
               SizedBox(height: 40.h),

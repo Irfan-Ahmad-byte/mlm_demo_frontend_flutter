@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:get/get.dart';
+import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/app_text_field.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_colors.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_textstyle.dart';
 import '../../components/network_node.dart';
@@ -23,43 +24,20 @@ class NetworkScreen extends GetView<NetworkController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 🔵 Search Field
-                Obx(() => TextField(
-                      controller: controller.textEditingController,
-                      decoration: InputDecoration(
-                        hintText: "Search Child...",
-                        hintStyle: AppTextstyle.text14.copyWith(
-                          fontSize: FontSizeManager.getFontSize(context, 10),
-                          color: AppColors.greyColor,
-                        ),
-                        filled: true,
-                        fillColor: AppColors.whiteColor,
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: AppColors.primaryColor,
-                        ),
-                        suffixIcon: controller.searchQuery.value.isNotEmpty
-                            ? IconButton(
-                                icon: const Icon(
-                                  Icons.clear,
-                                  color: AppColors.errorColor,
-                                ),
-                                onPressed: controller.clearSearch,
-                              )
-                            : null,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      onChanged: (value) {
-                        controller.searchQuery.value = value;
-                        controller.searchTree(value, autoScroll: false);
-                      },
-                      onSubmitted: (value) {
-                        controller.searchQuery.value = value;
-                        controller.searchTree(value, autoScroll: true);
-                      },
-                    )),
+                AppTextField(
+                  // label: "Search",
+                  hint: "Search Child...",
+                  controller: controller.textEditingController,
+                  icon: Icons.search,
+                  onChanged: (value) {
+                    controller.searchQuery.value = value;
+                    controller.searchTree(value, autoScroll: false);
+                  },
+                  onSubmitted: (value) {
+                    controller.searchQuery.value = value;
+                    controller.searchTree(value, autoScroll: true);
+                  },
+                ),
                 const SizedBox(height: 20),
 
                 // 🔵 Searching Indicator
@@ -70,11 +48,13 @@ class NetworkScreen extends GetView<NetworkController> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const SizedBox(
+                              SizedBox(
                                 width: 20,
                                 height: 20,
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppColors.secondaryColor,
+                                ),
                               ),
                               const SizedBox(width: 10),
                               Text(
@@ -82,7 +62,7 @@ class NetworkScreen extends GetView<NetworkController> {
                                 style: AppTextstyle.text14.copyWith(
                                   fontSize:
                                       FontSizeManager.getFontSize(context, 14),
-                                  color: Colors.grey.shade600,
+                                  color: AppColors.secondaryColor,
                                 ),
                               )
                             ],
@@ -115,7 +95,7 @@ class NetworkScreen extends GetView<NetworkController> {
                             style: AppTextstyle.text14.copyWith(
                               fontSize:
                                   FontSizeManager.getFontSize(context, 18),
-                              color: Colors.grey,
+                              color: AppColors.secondaryColor,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -242,8 +222,9 @@ class NetworkScreen extends GetView<NetworkController> {
                                                   ),
                                                   const SizedBox(width: 12),
                                                   Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       buildHighlightedText(
                                                           node.label,
@@ -260,7 +241,8 @@ class NetworkScreen extends GetView<NetworkController> {
                                                                   .getFontSize(
                                                                       context,
                                                                       10),
-                                                          color: Colors.grey,
+                                                          color: AppColors
+                                                              .scaffoldColor,
                                                         ),
                                                       )
                                                     ],
@@ -377,7 +359,7 @@ class NetworkScreen extends GetView<NetworkController> {
         style: AppTextstyle.text14.copyWith(
           fontSize: FontSizeManager.getFontSize(Get.context!, 12),
           fontWeight: FontWeight.w600,
-          color: AppColors.blackColor,
+          color: AppColors.secondaryColor,
         ),
       );
     }

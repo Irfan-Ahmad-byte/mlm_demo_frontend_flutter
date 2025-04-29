@@ -7,25 +7,25 @@ class ResponsiveWidget extends StatelessWidget {
   final Widget? customscreen;
 
   const ResponsiveWidget({
-    super.key,
+    Key? key,
     this.smallscreen,
     this.mediumscreen,
     this.largescreen,
     this.customscreen,
-  });
+  }) : super(key: key);
 
-  static bool issmallscreen(BuildContext context) {
+  static bool isSmallScreen(BuildContext context) {
     return MediaQuery.of(context).size.width < 600;
   }
 
-  static bool ismediumscreen(BuildContext context) {
-    return MediaQuery.of(context).size.width >= 850 &&
-        MediaQuery.of(context).size.width < 950;
+  static bool isCustomScreen(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    return width >= 600 && width < 850;
   }
 
-  static bool isCustomScreen(BuildContext context) {
-    return MediaQuery.of(context).size.width <= 850 &&
-        MediaQuery.of(context).size.width > 600;
+  static bool isMediumScreen(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    return width >= 850 && width < 1024;
   }
 
   static bool isLargeScreen(BuildContext context) {
@@ -34,19 +34,16 @@ class ResponsiveWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth >= 1024) {
-        return largescreen ?? const SizedBox.shrink();
-      } else if (constraints.maxWidth >= 950) {
-        return customscreen ??
-            mediumscreen ??
-            smallscreen ??
-            const SizedBox.shrink();
-      } else if (constraints.maxWidth >= 600) {
-        return mediumscreen ?? smallscreen ?? const SizedBox.shrink();
-      } else {
-        return smallscreen ?? const SizedBox.shrink();
-      }
-    });
+    final width = MediaQuery.of(context).size.width;
+
+    if (width >= 1024) {
+      return largescreen ?? const SizedBox.shrink();
+    } else if (width >= 850) {
+      return mediumscreen ?? smallscreen ?? const SizedBox.shrink();
+    } else if (width >= 600) {
+      return customscreen ?? smallscreen ?? const SizedBox.shrink();
+    } else {
+      return smallscreen ?? const SizedBox.shrink();
+    }
   }
 }

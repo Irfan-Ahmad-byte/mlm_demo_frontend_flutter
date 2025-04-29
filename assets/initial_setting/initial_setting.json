@@ -1,26 +1,26 @@
 {
     "app_name": "GrowBro",
-    "default_theme": "dark",
+    "default_theme": "light",
     "font_family": "Inter",
     "app_language": "en",
     "app_version": "1.0.0",
     "enable_version": "true",
     "light_theme": {
-        "primary_color": "#52a9b0",
-        "primary_dark_color": "#194d5c",
-        "accent_color": "#aadfe4",
-        "accent_dark_color": "#436b71",
-        "scaffold_color": "#ffffff",
-        "text_color": "#102e46",
-        "hint_color": "#c0dde2"
+        "primary_color": "#1B1F3B",
+        "primary_dark_color": "#0F172A",
+        "accent_color": "#D4AF37",
+        "accent_dark_color": "#8B0000",
+        "scaffold_color": "#F8FAFC",
+        "text_color": "#1F2937",
+        "hint_color": "#64748B"
     },
     "dark_theme": {
-        "primary_color": "#52a9b0",
-        "primary_dark_color": "#194d5c",
-        "accent_color": "#aadfe4",
-        "accent_dark_color": "#436b71",
-        "scaffold_color": "#102e46",
-        "text_color": "#c0dde2",
-        "hint_color": "#52a9b0"
+        "primary_color": "#0F172A",
+        "primary_dark_color": "#0A0E1A",
+        "accent_color": "#D4AF37",
+        "accent_dark_color": "#8B0000",
+        "scaffold_color": "#F8FAFC",
+        "text_color": "#E5E7EB",
+        "hint_color": "#64748B"
     }
 }

@@ -7,7 +7,7 @@ import 'package:mlm_demo_frontend_flutter/app/screens/index/controller/layout_co
 enum IndexScreens {
   bonus,
   refferal,
-  teamBonus,
+  dashboard,
   // weeklyReport,
   network,
   // profile,
@@ -19,14 +19,14 @@ class IndexController extends GetxController {
   late ScrollController scrollController;
   final layoutController = Get.put(LayoutController());
 
-  final Rx<IndexScreens> currentScreen = IndexScreens.network.obs;
+  final Rx<IndexScreens> currentScreen = IndexScreens.dashboard.obs;
 
   @override
   @override
   void onInit() {
     super.onInit();
 
-    int initialRoute = IndexScreens.network.index; // 👈 Default to network
+    int initialRoute = IndexScreens.dashboard.index; // 👈 Default to network
 
     if (initialRoute < 0 || initialRoute >= IndexScreens.values.length) {
       initialRoute = 0;
@@ -61,7 +61,7 @@ class IndexController extends GetxController {
 
     /// (Optional) Scroll any horizontal tab if attached
     if (scrollController.hasClients) {
-      double scrollPosition = ResponsiveWidget.issmallscreen(Get.context!)
+      double scrollPosition = ResponsiveWidget.isSmallScreen(Get.context!)
           ? index * 70
           : index * 100;
 

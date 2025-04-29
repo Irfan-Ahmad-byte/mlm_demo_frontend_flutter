@@ -5,20 +5,23 @@ import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widg
 import '../../core/utils/app_colors.dart';
 
 class AppTextField extends StatefulWidget {
-  final String label;
+  final String? label;
   final String hint;
   final bool isPassword;
   final Color? backgroundColor;
+  final Color? labelColors;
   final TextEditingController? controller;
   final IconData? icon;
   final String? Function(String?)? validator;
   final TextInputType keyboardType;
-  final VoidCallback? leftButtonOnPressed; // NEW
-  final IconData? leftButtonIcon; // NEW
+  final VoidCallback? leftButtonOnPressed;
+  final IconData? leftButtonIcon;
+  final Function(String)? onChanged; // 🆕 Added
+  final Function(String)? onSubmitted; // 🆕 Added
 
   const AppTextField({
     super.key,
-    required this.label,
+    this.label,
     required this.hint,
     this.controller,
     this.isPassword = false,
@@ -28,6 +31,9 @@ class AppTextField extends StatefulWidget {
     this.backgroundColor,
     this.leftButtonOnPressed,
     this.leftButtonIcon,
+    this.labelColors,
+    this.onChanged,
+    this.onSubmitted,
   });
 
   @override
@@ -36,20 +42,27 @@ class AppTextField extends StatefulWidget {
 
 class _AppTextFieldState extends State<AppTextField> {
   bool _obscure = true;
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.label.isNotEmpty)
+        if (widget.label != null && widget.label!.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(bottom: 6.0),
             child: Text(
-              widget.label,
+              widget.label!,
               style: TextStyle(
                 fontSize: 15,
-                color: AppColors.textColor,
+                color: widget.labelColors ?? AppColors.whiteColor,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -64,25 +77,23 @@ class _AppTextFieldState extends State<AppTextField> {
             Expanded(
               child: SizedBox(
                 height: ResponsiveWidget.isCustomScreen(context) ||
-                        ResponsiveWidget.issmallscreen(context)
+                        ResponsiveWidget.isSmallScreen(context)
                     ? 35.h
                     : 55.h,
                 child: TextFormField(
+                  focusNode: _focusNode,
                   controller: widget.controller,
                   keyboardType: widget.keyboardType,
                   obscureText: widget.isPassword ? _obscure : false,
                   validator: widget.validator,
+                  onChanged: widget.onChanged, // ✅ New
+                  onFieldSubmitted: widget.onSubmitted, // ✅ New
                   style: TextStyle(color: AppColors.textColor),
                   decoration: InputDecoration(
                     hintText: widget.hint,
                     hintStyle: TextStyle(color: AppColors.hintColor),
                     filled: true,
-                    fillColor: widget.backgroundColor ??
-                        AppColors.primaryColor.withOpacity(0.2),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
+                    fillColor: widget.backgroundColor ?? AppColors.whiteColor,
                     prefixIcon: widget.icon != null
                         ? Icon(widget.icon, color: AppColors.hintColor)
                         : null,
@@ -98,6 +109,35 @@ class _AppTextFieldState extends State<AppTextField> {
                                 setState(() => _obscure = !_obscure),
                           )
                         : null,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: AppColors.secondaryColor, // Grey border normally
+                        width: 1.9,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: AppColors
+                            .secondaryDarkColor, // Primary border when focused
+                        width: 1.5,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: AppColors.errorColor, // Error red
+                        width: 1.5,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: AppColors.errorColor,
+                        width: 1.5,
+                      ),
+                    ),
                   ),
                 ),
               ),

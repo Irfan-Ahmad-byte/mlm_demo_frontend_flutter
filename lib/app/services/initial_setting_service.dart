@@ -41,59 +41,63 @@ class InitialSettingServices extends GetxService {
 
   ThemeData getLightTheme() {
     final t = settingmodel.lightTheme ?? LightTheme();
+
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
+        statusBarColor:
+            UI.parseColor(t.primaryColor ?? "#1B1F3B"), // 🛡️ Royal Navy
         statusBarBrightness: Brightness.dark,
-        systemNavigationBarColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
+        systemNavigationBarColor: UI.parseColor(t.primaryColor ?? "#1B1F3B"),
       ),
     );
 
     return ThemeData(
       fontFamily: fontFamily,
       brightness: Brightness.light,
-      primaryColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
-      primaryColorDark: UI.parseColor(t.primaryDarkColor ?? "#194d5c"),
-      scaffoldBackgroundColor: UI.parseColor(t.scaffoldColor ?? "#ffffff"),
-      dividerColor: UI.parseColor(t.hintColor ?? "#c0dde2"),
-      focusColor: UI.parseColor(t.accentColor ?? "#aadfe4"),
-      hintColor: UI.parseColor(t.hintColor ?? "#c0dde2"),
+      primaryColor: UI.parseColor(t.primaryColor ?? "#1B1F3B"), // 🛡️
+      primaryColorDark: UI.parseColor(t.primaryDarkColor ?? "#0F172A"), // 🌌
+      scaffoldBackgroundColor:
+          UI.parseColor(t.scaffoldColor ?? "#F8FAFC"), // 🧺
+      dividerColor: UI.parseColor(t.hintColor ?? "#E5E7EB"), // Subtle dividers
+      focusColor: UI.parseColor(t.accentColor ?? "#D4AF37"), // Gold Accent
+      hintColor: UI.parseColor(t.hintColor ?? "#64748B"), // Muted Trusty Hint
       checkboxTheme: CheckboxThemeData(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
       ),
       textSelectionTheme: TextSelectionThemeData(
-        cursorColor: UI.parseColor(t.accentColor ?? "#aadfe4"),
-        selectionColor: UI.parseColor(t.accentColor ?? "#aadfe4"),
-        selectionHandleColor: UI.parseColor(t.accentColor ?? "#aadfe4"),
+        cursorColor: UI.parseColor(t.accentColor ?? "#D4AF37"), // Gold
+        selectionColor: UI.parseColor(t.accentColor ?? "#D4AF37"),
+        selectionHandleColor: UI.parseColor(t.accentColor ?? "#D4AF37"),
       ),
       colorScheme: ColorScheme.light(
-        primary: UI.parseColor(t.primaryColor ?? "#52a9b0"),
-        secondary: UI.parseColor(t.accentColor ?? "#aadfe4"),
+        primary: UI.parseColor(t.primaryColor ?? "#1B1F3B"),
+        secondary: UI.parseColor(t.accentColor ?? "#D4AF37"),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
+        backgroundColor: UI.parseColor(t.primaryColor ?? "#1B1F3B"),
       ),
     );
   }
 
   ThemeData getDarkTheme() {
     final t = settingmodel.darkTheme ?? LightTheme();
+
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
+        statusBarColor: UI.parseColor(t.primaryColor ?? "#0F172A"),
         statusBarBrightness: Brightness.light,
-        systemNavigationBarColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
+        systemNavigationBarColor: UI.parseColor(t.primaryColor ?? "#0F172A"),
       ),
     );
 
     return ThemeData.dark().copyWith(
       textTheme: Typography.material2021().black.apply(fontFamily: fontFamily),
-      primaryColor: UI.parseColor(t.primaryColor ?? "#52a9b0"),
-      scaffoldBackgroundColor: UI.parseColor(t.scaffoldColor ?? "#102e46"),
-      hintColor: UI.parseColor(t.hintColor ?? "#c0dde2"),
+      primaryColor: UI.parseColor(t.primaryColor ?? "#0F172A"),
+      scaffoldBackgroundColor: UI.parseColor(t.scaffoldColor ?? "#0F172A"),
+      hintColor: UI.parseColor(t.hintColor ?? "#64748B"),
       colorScheme: ColorScheme.dark(
-        primary: UI.parseColor(t.primaryColor ?? "#52a9b0"),
-        secondary: UI.parseColor(t.accentColor ?? "#aadfe4"),
+        primary: UI.parseColor(t.primaryColor ?? "#0F172A"),
+        secondary: UI.parseColor(t.accentColor ?? "#D4AF37"),
       ),
     );
   }

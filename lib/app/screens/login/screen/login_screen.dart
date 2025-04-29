@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
+import 'package:mlm_demo_frontend_flutter/app/core/utils/app_colors.dart';
 import 'package:mlm_demo_frontend_flutter/app/screens/login/components/login_form.dart';
 import '../../../core/assets/app_images.dart';
 import '../controller/login_controller.dart';
@@ -12,6 +13,10 @@ class LoginScreen extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ResponsiveWidget.isSmallScreen(context) ||
+              ResponsiveWidget.isCustomScreen(context)
+          ? AppColors.primaryDarkColor
+          : AppColors.transparentColor,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),

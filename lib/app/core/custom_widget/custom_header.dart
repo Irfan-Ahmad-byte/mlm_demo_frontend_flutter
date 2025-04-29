@@ -18,10 +18,10 @@ class CustomHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (ResponsiveWidget.issmallscreen(context) ||
+    if (ResponsiveWidget.isSmallScreen(context) ||
         ResponsiveWidget.isCustomScreen(context)) {
       return MobileHeader(layoutController: layoutController);
-    } else if (ResponsiveWidget.ismediumscreen(context) ||
+    } else if (ResponsiveWidget.isMediumScreen(context) ||
         ResponsiveWidget.isLargeScreen(context)) {
       return DesktopHeader(
         layoutController: layoutController,
@@ -67,12 +67,12 @@ class MobileHeader extends StatelessWidget {
                             style: TextStyle(
                                 fontSize:
                                     FontSizeManager.getFontSize(context, 16),
-                                color: AppColors.blackColor)),
+                                color: AppColors.whiteColor)),
                         Text("Account No",
                             style: TextStyle(
                                 fontSize:
                                     FontSizeManager.getFontSize(context, 14),
-                                color: AppColors.blackColor)),
+                                color: AppColors.whiteColor)),
                       ],
                     ),
                   ],
@@ -150,6 +150,16 @@ class MobileHeader extends StatelessWidget {
               ),
 
               // URL Shortener (Always)
+              Padding(
+                padding: EdgeInsets.only(
+                    top: 10.h, bottom: 10.h, left: 16.w, right: 16.w),
+                child: const AppTextField(
+                  label: "Referal Link",
+                  hint: "Copy Your Link",
+                  backgroundColor: AppColors.whiteColor,
+                  icon: Icons.link,
+                ),
+              ),
             ],
           ),
         ),
@@ -171,7 +181,6 @@ class DesktopHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.scaffoldColor,
       height: 180.h,
       width: double.infinity,
       child: Stack(
@@ -180,7 +189,7 @@ class DesktopHeader extends StatelessWidget {
           /// 🟦 Background Profile + URL + Placeholder
           Container(
             padding: EdgeInsets.only(top: 20.h),
-            color: AppColors.primaryColor.withOpacity(0.8),
+            color: AppColors.primaryColor,
             height: 140.h, // 🛑 Small height for header only
             width: double.infinity,
             child: Padding(
@@ -196,23 +205,26 @@ class DesktopHeader extends StatelessWidget {
                       children: [
                         CircleAvatar(
                             radius: 24.r, backgroundColor: Colors.purple),
-                        SizedBox(height: 8.h),
+                        SizedBox(width: 8.h),
                         Column(
                           children: [
                             Text(
                               "Username",
                               style: TextStyle(
                                 fontSize:
-                                    FontSizeManager.getFontSize(context, 16),
-                                color: AppColors.blackColor,
+                                    FontSizeManager.getFontSize(context, 12),
+                                color: AppColors.whiteColor,
                               ),
+                            ),
+                            SizedBox(
+                              height: 2.h,
                             ),
                             Text(
                               "Account No",
                               style: TextStyle(
                                 fontSize:
-                                    FontSizeManager.getFontSize(context, 14),
-                                color: AppColors.blackColor,
+                                    FontSizeManager.getFontSize(context, 10),
+                                color: AppColors.whiteColor,
                               ),
                             ),
                           ],
@@ -227,9 +239,10 @@ class DesktopHeader extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(top: 10.h),
-                      child: const AppTextField(
-                        label: "URL Shortner",
-                        hint: "Enter your URL",
+                      child: AppTextField(
+                        labelColors: AppColors.whiteColor,
+                        label: "Referal Link",
+                        hint: "Copy Your Link",
                         backgroundColor: AppColors.whiteColor,
                         icon: Icons.link,
                       ),
@@ -259,6 +272,35 @@ class DesktopHeader extends StatelessWidget {
               controller: controller,
             ),
           ),
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            top: 150.h,
+            left: 4.w,
+            child: Obx(() {
+              final labels = {
+                IndexScreens.bonus: 'Bonus ',
+                IndexScreens.network: 'Network',
+                IndexScreens.refferal: 'Referral',
+                IndexScreens.dashboard: 'Dashboard',
+              };
+
+              String? label = labels[controller.currentScreen.value];
+
+              if (label == null) {
+                return const SizedBox.shrink();
+              }
+
+              return Text(
+                label,
+                style: TextStyle(
+                  fontSize: FontSizeManager.getFontSize(context, 16),
+                  color: AppColors.secondaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            }),
+          )
         ],
       ),
     );
@@ -339,7 +381,7 @@ Widget _mobileBonusCard(
                         softWrap: false,
                         style: TextStyle(
                           fontSize: FontSizeManager.getFontSize(context, 10),
-                          color: AppColors.whiteColor,
+                          color: AppColors.blackColor,
                         ),
                       ),
                     ),
