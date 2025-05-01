@@ -6,7 +6,7 @@ import 'package:mlm_demo_frontend_flutter/app/screens/index/controller/layout_co
 // Your available pages
 enum IndexScreens {
   bonus,
-  refferal,
+  shortener,
   dashboard,
   // weeklyReport,
   network,

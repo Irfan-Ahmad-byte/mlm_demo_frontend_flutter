@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mlm_demo_frontend_flutter/app/screens/bonus/view/bonus_page.dart';
 import 'package:mlm_demo_frontend_flutter/app/screens/index/controller/index_controller.dart';
-import 'package:mlm_demo_frontend_flutter/app/screens/referral/view/referral_page.dart';
+import 'package:mlm_demo_frontend_flutter/app/screens/shortener/view/shortener_page.dart';
 import 'package:mlm_demo_frontend_flutter/app/screens/dashboard/view/dashboard_page.dart';
 
 import '../../core/custom_widget/custom_header.dart';
@@ -37,8 +37,8 @@ class IndexPage extends GetView<IndexController> {
                         //   return DashboardPage();
                         case IndexScreens.bonus:
                           return const BonusPage();
-                        case IndexScreens.refferal:
-                          return const ReferralPage();
+                        case IndexScreens.shortener:
+                          return const ShortenerPage();
                         case IndexScreens.dashboard:
                           return const DashboardPage();
                         // // case IndexScreens.weeklyReport:

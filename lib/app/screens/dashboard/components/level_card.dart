@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/custom_container.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_colors.dart';
+import 'package:mlm_demo_frontend_flutter/app/core/utils/app_spaces.dart';
 
 import '../../../core/utils/app_textstyle.dart';
 
@@ -45,7 +46,7 @@ class LevelCard extends StatelessWidget {
                       color: AppColors.whiteColor,
                       fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: 16),
+                height16,
 
                 // Progress Bar with optional glow
                 Stack(
@@ -93,7 +94,7 @@ class LevelCard extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 10),
+                height10,
 
                 // Percent Progress
                 Align(

@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:mlm_demo_frontend_flutter/app/screens/referral/view/screen/referral_screen.dart';
+import 'package:mlm_demo_frontend_flutter/app/screens/shortener/view/screen/shortener_screen.dart';
 import '../../../core/custom_widget/responsive_widget.dart';
 import '../../../core/utils/app_colors.dart';
 
-class ReferralPage extends StatelessWidget {
-  const ReferralPage({super.key});
+class ShortenerPage extends StatelessWidget {
+  const ShortenerPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return Title(
-      title: 'Referal |GrowBrow',
+      title: 'URL Shortener |GrowBrow',
       color: AppColors.textColor,
       child: Scaffold(
         body: SizedBox(
           height: size.height,
           width: size.width,
           child: const ResponsiveWidget(
-            largescreen: ReferralScreen(),
-            mediumscreen: ReferralScreen(),
-            smallscreen: ReferralScreen(),
+            largescreen: ShortenerScreen(),
+            mediumscreen: ShortenerScreen(),
+            smallscreen: ShortenerScreen(),
           ),
         ),
       ),

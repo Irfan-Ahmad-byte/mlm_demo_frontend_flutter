@@ -91,8 +91,6 @@ class BonusCard extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 8),
-
                 // WITHDRAWABLE + NETWORK AVG
                 if (withdrawable != null || networkAvg != null)
                   Column(

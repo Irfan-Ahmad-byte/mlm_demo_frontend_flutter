@@ -47,7 +47,6 @@ class InviteButton extends StatelessWidget {
               fontSize: FontSizeManager.getFontSize(context, 16),
               fontWeight: FontWeight.w600,
             ),
-            // const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           ),

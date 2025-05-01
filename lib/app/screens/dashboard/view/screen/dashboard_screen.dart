@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/custom_container.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
+import 'package:mlm_demo_frontend_flutter/app/core/utils/app_spaces.dart';
 import 'package:mlm_demo_frontend_flutter/app/screens/dashboard/controller/dashboard_controller.dart';
 
 import '../../components/bonus_card.dart';
@@ -25,7 +26,7 @@ class DashboardScreen extends GetView<DashboardController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                height: 190.h,
+                height: 200.h,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -35,7 +36,7 @@ class DashboardScreen extends GetView<DashboardController> {
                       ),
                     ),
                     if (!ResponsiveWidget.isSmallScreen(context)) ...[
-                      const SizedBox(width: 12),
+                      width12,
                       const Expanded(
                         child: BonusCard(
                           amount: 2350,
@@ -63,9 +64,7 @@ class DashboardScreen extends GetView<DashboardController> {
                 nextMilestoneMessage: "Invite 10 users to unlock Level 4",
               ),
               const InviteButton(),
-              SizedBox(
-                height: 20.h,
-              ),
+              height20,
               const ReferralAvatars(
                 referralNames: [
                   "Ali",

@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 class LayoutController extends GetxController {
   final RxDouble bonusWidth = 0.0.obs;
-  final RxString selectedBonusTab = ''.obs;
+  final RxString selectedBonusTab = 'bonus'.obs;
   final RxBool isBonusClicked = false.obs;
 
   void calculateBonusWidth() {

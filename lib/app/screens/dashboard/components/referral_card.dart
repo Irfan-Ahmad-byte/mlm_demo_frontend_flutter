@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mlm_demo_frontend_flutter/app/core/utils/app_colors.dart';
+import 'package:mlm_demo_frontend_flutter/app/core/utils/app_spaces.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:animated_flip_counter/animated_flip_counter.dart';
-
-import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_textstyle.dart';
 
 class ReferralCard extends StatelessWidget {
@@ -38,8 +38,8 @@ class ReferralCard extends StatelessWidget {
                     Container(
                       width: 100,
                       height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
+                      decoration: const BoxDecoration(
+                        color: AppColors.whiteColor,
                         shape: BoxShape.circle,
                       ),
                       alignment: Alignment.center,
@@ -54,7 +54,7 @@ class ReferralCard extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(height: 6),
+                          height6,
                           AnimatedFlipCounter(
                             duration: const Duration(milliseconds: 900),
                             value: count?.toDouble() ?? 0,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
+import 'package:mlm_demo_frontend_flutter/app/core/utils/app_textstyle.dart';
 
 import '../../core/utils/app_colors.dart';
 
@@ -91,7 +92,10 @@ class _AppTextFieldState extends State<AppTextField> {
                   style: TextStyle(color: AppColors.textColor),
                   decoration: InputDecoration(
                     hintText: widget.hint,
-                    hintStyle: TextStyle(color: AppColors.hintColor),
+                    hintStyle: AppTextstyle.text14.copyWith(
+                      fontSize: FontSizeManager.getFontSize(context, 12),
+                      color: AppColors.hintColor,
+                    ),
                     filled: true,
                     fillColor: widget.backgroundColor ?? AppColors.whiteColor,
                     prefixIcon: widget.icon != null

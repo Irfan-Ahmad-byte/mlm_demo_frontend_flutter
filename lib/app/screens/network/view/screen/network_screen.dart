@@ -1,9 +1,11 @@
 // Your imports
 import 'package:flutter/material.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/app_text_field.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_colors.dart';
+import 'package:mlm_demo_frontend_flutter/app/core/utils/app_spaces.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_textstyle.dart';
 import '../../components/network_node.dart';
 import '../../controller/network_controller.dart';
@@ -19,7 +21,7 @@ class NetworkScreen extends GetView<NetworkController> {
         return Scaffold(
           backgroundColor: AppColors.scaffoldColor,
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -38,7 +40,7 @@ class NetworkScreen extends GetView<NetworkController> {
                     controller.searchTree(value, autoScroll: true);
                   },
                 ),
-                const SizedBox(height: 20),
+                height20,
 
                 // 🔵 Searching Indicator
                 Obx(() => controller.isSearching.value
@@ -56,7 +58,7 @@ class NetworkScreen extends GetView<NetworkController> {
                                   color: AppColors.secondaryColor,
                                 ),
                               ),
-                              const SizedBox(width: 10),
+                              width10,
                               Text(
                                 "Searching...",
                                 style: AppTextstyle.text14.copyWith(
@@ -197,8 +199,8 @@ class NetworkScreen extends GetView<NetworkController> {
                                                       color: Colors.blueAccent,
                                                     )
                                                   else
-                                                    const SizedBox(width: 24),
-                                                  const SizedBox(width: 8),
+                                                    height24,
+                                                  height8,
                                                   CircleAvatar(
                                                     radius: 18,
                                                     backgroundColor: Colors
@@ -220,7 +222,7 @@ class NetworkScreen extends GetView<NetworkController> {
                                                       ),
                                                     ),
                                                   ),
-                                                  const SizedBox(width: 12),
+                                                  width12,
                                                   Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
@@ -302,7 +304,7 @@ class NetworkScreen extends GetView<NetworkController> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                height16,
                 Text(
                   node.label,
                   style: AppTextstyle.text14.copyWith(
@@ -311,7 +313,7 @@ class NetworkScreen extends GetView<NetworkController> {
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 8),
+                height8,
                 Text(
                   '${node.children.length} Child Nodes',
                   style: AppTextstyle.text14.copyWith(
@@ -319,7 +321,7 @@ class NetworkScreen extends GetView<NetworkController> {
                     color: Colors.grey,
                   ),
                 ),
-                const SizedBox(height: 24),
+                height24,
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

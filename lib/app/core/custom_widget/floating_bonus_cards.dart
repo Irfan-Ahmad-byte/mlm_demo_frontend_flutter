@@ -42,7 +42,7 @@ class _FloatingBonusCardsState extends State<FloatingBonusCards> {
 
       final defaultButtons = [
         {'title': "Bonus", 'key': 'bonus', 'amount': "1000"},
-        {'title': "Referral", 'key': 'refferal', 'amount': "500"},
+        {'title': "Shortener", 'key': 'shortener', 'amount': "500"},
         {'title': "Daashboard", 'key': 'dashboard', 'amount': "2000"},
       ];
 
@@ -61,7 +61,7 @@ class _FloatingBonusCardsState extends State<FloatingBonusCards> {
           defaultButtons[1],
           defaultButtons[2],
         ];
-      } else if (selected == 'referral') {
+      } else if (selected == 'shortener') {
         buttons = [
           defaultButtons[0],
           networkButton,
@@ -107,8 +107,8 @@ class _FloatingBonusCardsState extends State<FloatingBonusCards> {
                         layoutController.selectBonusTab(btn['key']!);
                         // 👇 Navigate to Bonus screen
                         controller.changeIndex(IndexScreens.bonus.index);
-                      } else if (btn['key'] == 'refferal') {
-                        controller.changeIndex(IndexScreens.refferal.index);
+                      } else if (btn['key'] == 'shortener') {
+                        controller.changeIndex(IndexScreens.shortener.index);
                       } else if (btn['key'] == 'dashboard') {
                         controller.changeIndex(IndexScreens.dashboard.index);
                       } else if (btn['key'] == 'logout') {

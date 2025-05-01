@@ -180,7 +180,7 @@ class DesktopHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 180.h,
       width: double.infinity,
       child: Stack(
@@ -239,7 +239,7 @@ class DesktopHeader extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(top: 10.h),
-                      child: AppTextField(
+                      child: const AppTextField(
                         labelColors: AppColors.whiteColor,
                         label: "Referal Link",
                         hint: "Copy Your Link",
@@ -275,13 +275,13 @@ class DesktopHeader extends StatelessWidget {
           AnimatedPositioned(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            top: 150.h,
-            left: 4.w,
+            top: 140.h,
+            left: 16.w,
             child: Obx(() {
               final labels = {
                 IndexScreens.bonus: 'Bonus ',
                 IndexScreens.network: 'Network',
-                IndexScreens.refferal: 'Referral',
+                IndexScreens.shortener: 'Shortener',
                 IndexScreens.dashboard: 'Dashboard',
               };
 
@@ -294,7 +294,7 @@ class DesktopHeader extends StatelessWidget {
               return Text(
                 label,
                 style: TextStyle(
-                  fontSize: FontSizeManager.getFontSize(context, 16),
+                  fontSize: FontSizeManager.getFontSize(context, 24),
                   color: AppColors.secondaryColor,
                   fontWeight: FontWeight.bold,
                 ),
