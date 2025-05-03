@@ -36,22 +36,20 @@ class BonusScreen extends GetView<BonusController> {
                   height20,
                   const BonusGraphCard(),
                 ] else ...[
-                  SizedBox(
+                  const SizedBox(
                     height: 230,
-                    child: IntrinsicHeight(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const Expanded(
-                            child: BonusSummaryCard(
-                              amount: 2550,
-                              monthlyIncrease: 120,
-                            ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: BonusSummaryCard(
+                            amount: 2550,
+                            monthlyIncrease: 120,
                           ),
-                          VerticalDivider(),
-                          const Expanded(child: BonusGraphCard()),
-                        ],
-                      ),
+                        ),
+                        VerticalDivider(),
+                        Expanded(child: BonusGraphCard()),
+                      ],
                     ),
                   ),
                 ],
@@ -59,31 +57,26 @@ class BonusScreen extends GetView<BonusController> {
                 height20,
 
                 /// 📊 Breakdown + Timeline
-                SizedBox(
-                  height: 520,
-                  child: isMobileOrCustomScreen(context)
-                      ? const BonusBreakdownCard()
-                      : Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 240),
-                              child: const BonusActivityTimeline(),
-                            ),
-                            VerticalDivider(),
-                            const Expanded(child: BonusBreakdownCard()),
-                          ],
-                        ),
-                ),
+                const BonusBreakdownCard(),
 
                 /// 📜 Timeline for Mobile
-                if (isMobileOrCustomScreen(context)) ...[
-                  height20,
-                  const SizedBox(
-                    height: 280,
-                    child: BonusActivityTimeline(),
-                  ),
-                ]
+                BonusHistoryTable(
+                  entries: [
+                    BonusHistoryEntry(
+                        date: "2025-05-01",
+                        source: "User123",
+                        level: 2,
+                        amount: 120.0,
+                        status: "Paid"),
+                    BonusHistoryEntry(
+                        date: "2025-05-02",
+                        source: "User456",
+                        level: 3,
+                        amount: 75.0,
+                        status: "Pending"),
+                    // Add more entries
+                  ],
+                )
               ],
             ),
           ),

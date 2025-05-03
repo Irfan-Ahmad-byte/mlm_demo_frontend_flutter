@@ -3,9 +3,15 @@ import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/custom_containe
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_colors.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_textstyle.dart';
 
+import '../../../core/custom_widget/responsive_widget.dart';
 import '../../../core/utils/app_spaces.dart';
 
 class BonusGraphCard extends StatelessWidget {
+  static bool isMobileOrCustomScreen(BuildContext context) {
+    return ResponsiveWidget.isSmallScreen(context) ||
+        ResponsiveWidget.isCustomScreen(context);
+  }
+
   const BonusGraphCard({super.key});
 
   @override
@@ -45,7 +51,7 @@ class BonusGraphCard extends StatelessWidget {
 
           // 📈 Graph
           SizedBox(
-            height: 100,
+            height: isMobileOrCustomScreen(context) ? 70 : 100,
             child: CustomPaint(
               size: const Size(double.infinity, 100),
               painter: _BonusGraphPainter(),

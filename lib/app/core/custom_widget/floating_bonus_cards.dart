@@ -43,7 +43,7 @@ class _FloatingBonusCardsState extends State<FloatingBonusCards> {
       final defaultButtons = [
         {'title': "Bonus", 'key': 'bonus', 'amount': "1000"},
         {'title': "Shortener", 'key': 'shortener', 'amount': "500"},
-        {'title': "Daashboard", 'key': 'dashboard', 'amount': "2000"},
+        {'title': "Dashboard", 'key': 'dashboard', 'amount': "2000"},
       ];
 
       final networkButton = {
@@ -104,13 +104,15 @@ class _FloatingBonusCardsState extends State<FloatingBonusCards> {
                         // 👇 Navigate to Network screen
                         controller.changeIndex(IndexScreens.network.index);
                       } else if (btn['key'] == 'bonus') {
-                        layoutController.selectBonusTab(btn['key']!);
                         // 👇 Navigate to Bonus screen
                         controller.changeIndex(IndexScreens.bonus.index);
+                        layoutController.selectBonusTab(btn['key']!);
                       } else if (btn['key'] == 'shortener') {
                         controller.changeIndex(IndexScreens.shortener.index);
+                        layoutController.selectBonusTab(btn['key']!);
                       } else if (btn['key'] == 'dashboard') {
                         controller.changeIndex(IndexScreens.dashboard.index);
+                        layoutController.selectBonusTab(btn['key']!);
                       } else if (btn['key'] == 'logout') {
                         controller.changeIndex(IndexScreens.logout.index);
                       }

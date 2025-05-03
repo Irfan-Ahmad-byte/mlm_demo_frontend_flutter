@@ -20,7 +20,10 @@ class CustomHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     if (ResponsiveWidget.isSmallScreen(context) ||
         ResponsiveWidget.isCustomScreen(context)) {
-      return MobileHeader(layoutController: layoutController);
+      return MobileHeader(
+        layoutController: layoutController,
+        controller: controller,
+      );
     } else if (ResponsiveWidget.isMediumScreen(context) ||
         ResponsiveWidget.isLargeScreen(context)) {
       return DesktopHeader(
@@ -38,7 +41,9 @@ class CustomHeader extends StatelessWidget {
 // ------------------------------------------------------------------
 class MobileHeader extends StatelessWidget {
   final LayoutController layoutController;
-  const MobileHeader({super.key, required this.layoutController});
+  final IndexController controller;
+  const MobileHeader(
+      {super.key, required this.layoutController, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +97,8 @@ class MobileHeader extends StatelessWidget {
 
                     final defaultButtons = [
                       {'title': "Bonus", 'key': 'bonus'},
-                      {'title': "Referral", 'key': 'referral'},
-                      {'title': "Team Bonus", 'key': 'teamBonus'},
+                      {'title': "Shortener", 'key': 'shortener'},
+                      {'title': "Dashboard", 'key': 'dashboard'},
                     ];
 
                     final networkButton = {
@@ -109,13 +114,13 @@ class MobileHeader extends StatelessWidget {
                         defaultButtons[1],
                         defaultButtons[2],
                       ];
-                    } else if (selected == 'referral') {
+                    } else if (selected == 'shortener') {
                       buttons = [
                         defaultButtons[0],
                         networkButton,
                         defaultButtons[2],
                       ];
-                    } else if (selected == 'teamBonus') {
+                    } else if (selected == 'dashboard') {
                       buttons = [
                         defaultButtons[0],
                         defaultButtons[1],
@@ -137,7 +142,31 @@ class MobileHeader extends StatelessWidget {
                                 context,
                                 title: btn['title']!,
                                 onPressed: () {
-                                  layoutController.selectBonusTab(btn['key']!);
+                                  if (btn['key'] == 'network') {
+                                    // 👇 Navigate to Network screen
+                                    controller.changeIndex(
+                                        IndexScreens.network.index);
+                                  } else if (btn['key'] == 'bonus') {
+                                    // 👇 Navigate to Bonus screen
+                                    controller
+                                        .changeIndex(IndexScreens.bonus.index);
+                                    layoutController
+                                        .selectBonusTab(btn['key']!);
+                                  } else if (btn['key'] == 'shortener') {
+                                    controller.changeIndex(
+                                        IndexScreens.shortener.index);
+                                    layoutController
+                                        .selectBonusTab(btn['key']!);
+                                  } else if (btn['key'] == 'dashboard') {
+                                    controller.changeIndex(
+                                        IndexScreens.dashboard.index);
+                                    layoutController
+                                        .selectBonusTab(btn['key']!);
+                                  } else if (btn['key'] == 'logout') {
+                                    controller
+                                        .changeIndex(IndexScreens.logout.index);
+                                  }
+                                  // Add any more conditions if you add more buttons
                                 },
                               ),
                             ),
