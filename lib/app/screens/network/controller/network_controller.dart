@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:get/get.dart';
+import 'package:mlm_demo_frontend_flutter/app/screens/network/repository/network_repository.dart';
 
+import '../../../api/api_preference.dart';
+import '../../../core/custom_widget/custom_snackbar.dart';
+import '../../../core/custom_widget/loading.dart';
+import '../../../core/utils/app_colors.dart';
 import '../components/network_node.dart';
+import '../model/downline_model.dart';
 
 class NetworkController extends GetxController {
   late final TreeController<NetworkNode> treeController;
@@ -24,11 +30,13 @@ class NetworkController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final root = buildTree();
     treeController = TreeController<NetworkNode>(
-      roots: [root],
+      roots: [],
       childrenProvider: (node) => node.children,
     );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchDownlineTree(); // ✅ Called after build
+    });
   }
 
   void clearSearch() {
@@ -38,66 +46,66 @@ class NetworkController extends GetxController {
     treeController.collapseAll();
   }
 
-  NetworkNode buildTree() {
-    return NetworkNode(
-      label: 'Root Node',
-      children: [
-        NetworkNode(
-          label: 'Child 1',
-          children: [
-            NetworkNode(
-              label: 'Grandchild 1.1',
-              accountId: '1234456545',
-            ),
-            NetworkNode(
-              label: 'Grandchild 1.2',
-              accountId: '1234456545',
-            ),
-          ],
-          accountId: '1234456545',
-        ),
-        NetworkNode(
-          label: 'Child 2',
-          children: [
-            NetworkNode(
-              label: 'Grandchild 2.1',
-              accountId: '1234456545',
-            ),
-          ],
-          accountId: '1234456545',
-        ),
-        NetworkNode(
-          label: 'Child 3',
-          children: [
-            NetworkNode(
-              label: 'Grandchild 3.1',
-              accountId: '1234456545',
-            ),
-            NetworkNode(
-              label: 'Grandchild 3.2',
-              accountId: '1234456545',
-            ),
-          ],
-          accountId: '1234456545',
-        ),
-        NetworkNode(
-          label: 'Child 4',
-          children: [
-            NetworkNode(
-              label: 'Grandchild 4.1',
-              accountId: '1234456545',
-            ),
-            NetworkNode(
-              label: 'Grandchild 4.2',
-              accountId: '1234456545',
-            ),
-          ],
-          accountId: '1234456545',
-        ),
-      ],
-      accountId: '1234456545',
-    );
-  }
+  // NetworkNode buildTree() {
+  //   return NetworkNode(
+  //     label: 'Root Node',
+  //     children: [
+  //       NetworkNode(
+  //         label: 'Child 1',
+  //         children: [
+  //           NetworkNode(
+  //             label: 'Grandchild 1.1',
+  //             accountId: '1234456545',
+  //           ),
+  //           NetworkNode(
+  //             label: 'Grandchild 1.2',
+  //             accountId: '1234456545',
+  //           ),
+  //         ],
+  //         accountId: '1234456545',
+  //       ),
+  //       NetworkNode(
+  //         label: 'Child 2',
+  //         children: [
+  //           NetworkNode(
+  //             label: 'Grandchild 2.1',
+  //             accountId: '1234456545',
+  //           ),
+  //         ],
+  //         accountId: '1234456545',
+  //       ),
+  //       NetworkNode(
+  //         label: 'Child 3',
+  //         children: [
+  //           NetworkNode(
+  //             label: 'Grandchild 3.1',
+  //             accountId: '1234456545',
+  //           ),
+  //           NetworkNode(
+  //             label: 'Grandchild 3.2',
+  //             accountId: '1234456545',
+  //           ),
+  //         ],
+  //         accountId: '1234456545',
+  //       ),
+  //       NetworkNode(
+  //         label: 'Child 4',
+  //         children: [
+  //           NetworkNode(
+  //             label: 'Grandchild 4.1',
+  //             accountId: '1234456545',
+  //           ),
+  //           NetworkNode(
+  //             label: 'Grandchild 4.2',
+  //             accountId: '1234456545',
+  //           ),
+  //         ],
+  //         accountId: '1234456545',
+  //       ),
+  //     ],
+  //     accountId: '1234456545',
+  //   );
+  // }
 
   void selectNode(NetworkNode node) {
     selectedNode.value = node;
@@ -213,9 +221,60 @@ class NetworkController extends GetxController {
     }
   }
 
+  final networkRepository = NetworkRepository();
   @override
   void onClose() {
     treeController.dispose();
     super.onClose();
+  }
+
+  Future<void> fetchDownlineTree({String? userId}) async {
+    CustomLoading.show();
+    try {
+      final accessToken = await ApiPreference.getApiToken;
+      if (accessToken == null || accessToken.isEmpty) {
+        CustomSnackBar.show(
+          message: "Token missing. Please login again.",
+          backColor: AppColors.errorColor,
+        );
+        return;
+      }
+
+      final downlines = await networkRepository.getDownline({
+        "token": accessToken.toString(),
+      });
+
+      if (downlines.isNotEmpty) {
+        /// Convert each DownlineModel to NetworkNode
+        final rootNodes = downlines.map(convertToTree).toList();
+
+        treeController.roots = rootNodes;
+        treeController.rebuild();
+        update();
+      }
+    } catch (e) {
+      Get.log("Fetch Downline Error: $e");
+    } finally {
+      CustomLoading.hide();
+    }
+  }
+
+  NetworkNode convertToTree(DownlineModel model) {
+    return NetworkNode(
+      label: model.level.toString(),
+      accountId: model.id ?? "No ID",
+      children: model.children?.map((child) {
+            return convertChildToNode(child);
+          }).toList() ??
+          [],
+    );
+  }
+
+  NetworkNode convertChildToNode(Children child) {
+    return NetworkNode(
+      label: child.level.toString(),
+      accountId: child.id ?? "No ID",
+      children: child.children?.map(convertChildToNode).toList() ?? [],
+    );
   }
 }

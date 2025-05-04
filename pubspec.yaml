@@ -48,7 +48,7 @@ dependencies:
   path_provider: ^2.0.11
   uuid: ^4.3.3
   mask_text_input_formatter: ^2.9.0
-
+ 
 dev_dependencies:
   flutter_test:
     sdk: flutter

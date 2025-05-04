@@ -17,13 +17,13 @@ class AppTextField extends StatefulWidget {
   final IconData? icon;
   final String? Function(String?)? validator;
   final TextInputType keyboardType;
-  final VoidCallback? leftButtonOnPressed;
+  final VoidCallback? leftButtonOnPressed, onClear;
   final IconData? leftButtonIcon;
   final Function(String)? onChanged; // 🆕 Added
   final Function(String)? onSubmitted; // 🆕 Added
   final List<TextInputFormatter>? inputFormatters;
   final bool? isReadOnly;
-  final bool showSuffixIcon;
+  final bool showSuffixIcon, isClear;
 
   const AppTextField({
     super.key,
@@ -43,6 +43,8 @@ class AppTextField extends StatefulWidget {
     this.inputFormatters,
     this.isReadOnly,
     this.showSuffixIcon = false,
+    this.onClear,
+    this.isClear = false,
   });
 
   @override
@@ -146,7 +148,14 @@ class _AppTextFieldState extends State<AppTextField> {
                                   }
                                 },
                               ))
-                        : null,
+                        : widget.isClear
+                            ? IconButton(
+                                icon: Icon(Icons.clear,
+                                    color: AppColors.hintColor),
+                                tooltip: "Search",
+                                onPressed: widget.onClear,
+                              )
+                            : null,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(

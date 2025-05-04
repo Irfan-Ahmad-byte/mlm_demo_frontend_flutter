@@ -27,6 +27,10 @@ class NetworkScreen extends GetView<NetworkController> {
               children: [
                 // 🔵 Search Field
                 AppTextField(
+                  isClear: true,
+                  onClear: () {
+                    controller.clearSearch();
+                  },
                   // label: "Search",
                   hint: "Search Child...",
                   controller: controller.textEditingController,
@@ -243,10 +247,23 @@ class NetworkScreen extends GetView<NetworkController> {
                                                                   .getFontSize(
                                                                       context,
                                                                       10),
-                                                          color: AppColors
-                                                              .scaffoldColor,
+                                                          color: controller
+                                                                  .searchedNodes
+                                                                  .contains(
+                                                                      node)
+                                                              ? Colors
+                                                                  .orangeAccent // or any highlight color
+                                                              : AppColors
+                                                                  .scaffoldColor,
+                                                          fontWeight: controller
+                                                                  .searchedNodes
+                                                                  .contains(
+                                                                      node)
+                                                              ? FontWeight.bold
+                                                              : FontWeight
+                                                                  .normal,
                                                         ),
-                                                      )
+                                                      ),
                                                     ],
                                                   ),
                                                 ],
