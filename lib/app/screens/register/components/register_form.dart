@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/assets/app_icons.dart';
-import 'package:mlm_demo_frontend_flutter/app/routes/app_routes.dart';
+import 'package:mlm_demo_frontend_flutter/app/screens/register/controller/register_controller.dart';
 import '../../../core/assets/app_images.dart';
 import '../../../core/custom_widget/app_text_field.dart';
 import '../../../core/custom_widget/app_button.dart';
 import '../../../core/custom_widget/responsive_widget.dart';
 import '../../../core/utils/app_colors.dart';
-import '../controller/login_controller.dart';
+import '../../../routes/app_routes.dart';
 
-class LoginForm extends StatelessWidget {
-  final loginFormKey = GlobalKey<FormState>();
-  final LoginController controller;
+class RegisterForm extends StatelessWidget {
+  final registerKey = GlobalKey<FormState>();
+  final RegisterController controller;
 
-  LoginForm({super.key, required this.controller});
+  RegisterForm({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 110.h),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 44.h),
         constraints: BoxConstraints(
           maxWidth:
               ResponsiveWidget.isSmallScreen(context) ? double.infinity : 320.w,
@@ -35,7 +35,7 @@ class LoginForm extends StatelessWidget {
           ),
         ),
         child: Form(
-          key: loginFormKey,
+          key: registerKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -47,7 +47,7 @@ class LoginForm extends StatelessWidget {
               ),
               SizedBox(height: 30.h),
               Text(
-                'Log in',
+                'Register',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -62,6 +62,15 @@ class LoginForm extends StatelessWidget {
                   fontSize: 14,
                   color: AppColors.greyColor,
                 ),
+              ),
+              SizedBox(height: 40.h),
+
+              /// Password Field
+              AppTextField(
+                label: 'Sponsor',
+                hint: 'Enter Address',
+                controller: controller.parentIdController,
+                inputFormatters: [controller.maskFormatter],
               ),
               SizedBox(height: 20.h),
 
@@ -79,7 +88,7 @@ class LoginForm extends StatelessWidget {
                   return null;
                 },
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 10.h),
 
               /// Password Field
               AppTextField(
@@ -96,31 +105,26 @@ class LoginForm extends StatelessWidget {
                   return null;
                 },
               ),
+
               SizedBox(height: 40.h),
 
               /// Login Button
               AppButton(
-                text: 'Log in',
+                text: 'Sign Up',
                 onPressed: () {
-                  if (loginFormKey.currentState!.validate()) {
-                    controller.loginUser(
-                      email: controller.emailController.text,
-                      password: controller.passwordController.text,
-                      isClear: () {
-                        controller.emailController.clear();
-                        controller.passwordController.clear();
-                      },
-                    );
+                  print(controller.parentIdController.text);
+                  if (registerKey.currentState!.validate()) {
+                    controller.registerUser();
                   }
                 },
               ),
               SizedBox(height: 20.h),
               TextButton(
                 onPressed: () {
-                  Get.toNamed(AppRoutes.register);
+                  Get.toNamed(AppRoutes.login);
                 },
                 child: Text(
-                  'Don\'t have an account? Sign up',
+                  'Already have an account? Log in',
                   style: TextStyle(
                     fontSize: 14,
                     color: AppColors.errorColor,

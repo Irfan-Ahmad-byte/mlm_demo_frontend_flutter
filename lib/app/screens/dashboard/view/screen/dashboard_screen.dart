@@ -26,7 +26,7 @@ class DashboardScreen extends GetView<DashboardController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                height: 200.h,
+                height: 230,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

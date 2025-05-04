@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:mlm_demo_frontend_flutter/app/core/utils/app_constants.dart';
+ import 'package:mlm_demo_frontend_flutter/app/core/utils/app_constants.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
 import 'app/services/initial_setting_service.dart';
@@ -9,7 +9,10 @@ import 'app/services/initial_setting_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // ✅ Use a safe local path instead of OneDrive's Documents
+ 
   await Get.putAsync(() => InitialSettingServices().init());
+
   runApp(const MyApp());
 }
 

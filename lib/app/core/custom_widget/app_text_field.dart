@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/custom_snackbar.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_textstyle.dart';
 
@@ -19,6 +21,9 @@ class AppTextField extends StatefulWidget {
   final IconData? leftButtonIcon;
   final Function(String)? onChanged; // 🆕 Added
   final Function(String)? onSubmitted; // 🆕 Added
+  final List<TextInputFormatter>? inputFormatters;
+  final bool? isReadOnly;
+  final bool showSuffixIcon;
 
   const AppTextField({
     super.key,
@@ -35,6 +40,9 @@ class AppTextField extends StatefulWidget {
     this.labelColors,
     this.onChanged,
     this.onSubmitted,
+    this.inputFormatters,
+    this.isReadOnly,
+    this.showSuffixIcon = false,
   });
 
   @override
@@ -82,6 +90,8 @@ class _AppTextFieldState extends State<AppTextField> {
                     ? 35.h
                     : 55.h,
                 child: TextFormField(
+                  readOnly: widget.isReadOnly ?? false,
+                  inputFormatters: widget.inputFormatters,
                   focusNode: _focusNode,
                   controller: widget.controller,
                   keyboardType: widget.keyboardType,
@@ -89,7 +99,13 @@ class _AppTextFieldState extends State<AppTextField> {
                   validator: widget.validator,
                   onChanged: widget.onChanged, // ✅ New
                   onFieldSubmitted: widget.onSubmitted, // ✅ New
-                  style: TextStyle(color: AppColors.textColor),
+                  style: TextStyle(
+                      color: AppColors.textColor,
+                      fontSize: AppTextstyle.text10
+                          .copyWith(
+                            fontSize: FontSizeManager.getFontSize(context, 10),
+                          )
+                          .fontSize),
                   decoration: InputDecoration(
                     hintText: widget.hint,
                     hintStyle: AppTextstyle.text14.copyWith(
@@ -101,17 +117,35 @@ class _AppTextFieldState extends State<AppTextField> {
                     prefixIcon: widget.icon != null
                         ? Icon(widget.icon, color: AppColors.hintColor)
                         : null,
-                    suffixIcon: widget.isPassword
-                        ? IconButton(
-                            icon: Icon(
-                              _obscure
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: AppColors.hintColor,
-                            ),
-                            onPressed: () =>
-                                setState(() => _obscure = !_obscure),
-                          )
+                    suffixIcon: widget.showSuffixIcon
+                        ? (widget.isPassword
+                            ? IconButton(
+                                icon: Icon(
+                                  _obscure
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: AppColors.hintColor,
+                                ),
+                                onPressed: () =>
+                                    setState(() => _obscure = !_obscure),
+                                tooltip: "Show/Hide Password",
+                              )
+                            : IconButton(
+                                icon: Icon(Icons.copy,
+                                    color: AppColors.hintColor),
+                                tooltip: "Copy to Clipboard",
+                                onPressed: () {
+                                  if (widget.controller != null &&
+                                      widget.controller!.text.isNotEmpty) {
+                                    Clipboard.setData(
+                                      ClipboardData(
+                                          text: widget.controller!.text),
+                                    );
+                                    CustomSnackBar.show(
+                                        message: 'Copied to clipboard');
+                                  }
+                                },
+                              ))
                         : null,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),

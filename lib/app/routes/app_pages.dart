@@ -4,6 +4,7 @@ import 'package:mlm_demo_frontend_flutter/app/screens/bonus/view/bonus_page.dart
 import 'package:mlm_demo_frontend_flutter/app/screens/index/index_page.dart';
 import 'package:mlm_demo_frontend_flutter/app/screens/login/bindings/login_binding.dart';
 import 'package:mlm_demo_frontend_flutter/app/screens/login/login_page.dart';
+import 'package:mlm_demo_frontend_flutter/app/screens/register/register_page.dart';
 
 class AppPages extends AppRoutes {
   static final pages = [
@@ -12,6 +13,7 @@ class AppPages extends AppRoutes {
         page: () => const LoginPage(),
         binding: LoginBinding()),
     GetPage(name: AppRoutes.index, page: () => const IndexPage()),
+    GetPage(name: AppRoutes.register, page: () => const RegisterPage()),
     GetPage(name: AppRoutes.bonus, page: () => const BonusPage())
   ];
 }

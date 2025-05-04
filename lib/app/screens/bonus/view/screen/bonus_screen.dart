@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_spaces.dart';
-import '../../components/bonus_activity_table.dart';
+import '../../components/bonus_history_table.dart';
 import '../../components/bonus_breakdown_card.dart';
 import '../../components/bonus_graph_card.dart';
 import '../../components/bonus_summary_card.dart';
