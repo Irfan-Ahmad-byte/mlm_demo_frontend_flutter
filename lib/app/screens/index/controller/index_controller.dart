@@ -129,6 +129,7 @@ class IndexController extends GetxController {
         Get.log("User info: $response");
         userName.value = response["email"];
         address.value = response['id'];
+        await ApiPreference.setUserId(response['id']);
         referralAddressController.text = response['id'];
       } else {
         CustomSnackBar.show(

@@ -89,7 +89,7 @@ class _AppTextFieldState extends State<AppTextField> {
               child: SizedBox(
                 height: ResponsiveWidget.isCustomScreen(context) ||
                         ResponsiveWidget.isSmallScreen(context)
-                    ? 35.h
+                    ? 40.h
                     : 55.h,
                 child: TextFormField(
                   readOnly: widget.isReadOnly ?? false,

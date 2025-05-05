@@ -80,33 +80,57 @@ class NetworkScreen extends GetView<NetworkController> {
                 // 🔵 Tree View
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryDarkColor,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          blurRadius: 12,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    child: Obx(() {
-                      if (controller.searchQuery.value.isNotEmpty &&
-                          controller.searchedNodes.isEmpty) {
-                        return Center(
-                          child: Text(
-                            "No results found!",
-                            style: AppTextstyle.text14.copyWith(
-                              fontSize:
-                                  FontSizeManager.getFontSize(context, 18),
-                              color: AppColors.secondaryColor,
-                              fontWeight: FontWeight.w600,
-                            ),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryDarkColor,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
                           ),
-                        );
-                      } else {
+                        ],
+                      ),
+                      child: Obx(() {
+                        final hasSearch =
+                            controller.searchQuery.value.isNotEmpty;
+                        final hasSearchResults =
+                            controller.searchedNodes.isNotEmpty;
+                        final hasDownline =
+                            controller.treeController.roots.isNotEmpty;
+
+                        // 🔍 No search results
+                        if (hasSearch && !hasSearchResults) {
+                          return Center(
+                            child: Text(
+                              "No results found!",
+                              style: AppTextstyle.text14.copyWith(
+                                fontSize:
+                                    FontSizeManager.getFontSize(context, 18),
+                                color: AppColors.secondaryColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          );
+                        }
+
+                        // 📭 No downline at all
+                        if (!hasSearch && !hasDownline) {
+                          return Center(
+                            child: Text(
+                              "No downline found!",
+                              style: AppTextstyle.text14.copyWith(
+                                fontSize:
+                                    FontSizeManager.getFontSize(context, 18),
+                                color: AppColors.secondaryColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          );
+                        }
+
+                        // ✅ TreeView
                         return Scrollbar(
                           controller: controller.horizontalScrollController,
                           thumbVisibility: true,
@@ -133,9 +157,10 @@ class NetworkScreen extends GetView<NetworkController> {
                                   return Padding(
                                     key: nodeKey,
                                     padding: EdgeInsets.only(
-                                        left: entry.level * 20,
-                                        top: 8,
-                                        bottom: 8),
+                                      left: entry.level * 20,
+                                      top: 8,
+                                      bottom: 8,
+                                    ),
                                     child: AnimatedContainer(
                                       duration:
                                           const Duration(milliseconds: 300),
@@ -152,123 +177,93 @@ class NetworkScreen extends GetView<NetworkController> {
                                                         .withOpacity(0.4))),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
-                                      child: AnimatedSize(
-                                        duration:
-                                            const Duration(milliseconds: 400),
-                                        curve: Curves.easeInOutCubic,
-                                        child: InkWell(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          onTap: () {
-                                            if (node.children.isNotEmpty) {
-                                              if (controller.expandedNodes
-                                                  .contains(node)) {
-                                                controller.expandedNodes
-                                                    .remove(node);
-                                                controller.treeController
-                                                    .collapse(node);
-                                              } else {
-                                                controller.expandedNodes
-                                                    .add(node);
-                                                controller.treeController
-                                                    .expand(node);
-                                              }
+                                      child: InkWell(
+                                        borderRadius: BorderRadius.circular(12),
+                                        onTap: () {
+                                          if (node.children.isNotEmpty) {
+                                            if (controller.expandedNodes
+                                                .contains(node)) {
+                                              controller.expandedNodes
+                                                  .remove(node);
+                                              controller.treeController
+                                                  .collapse(node);
+                                            } else {
+                                              controller.expandedNodes
+                                                  .add(node);
+                                              controller.treeController
+                                                  .expand(node);
                                             }
-                                            controller.selectNode(node);
-                                          },
-                                          onLongPress: () {
-                                            _showNodeDetailsDialog(
-                                                context, node);
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10, horizontal: 10),
-                                            child: AnimatedSize(
-                                              duration: const Duration(
-                                                  milliseconds: 400),
-                                              curve: Curves.easeInOutCubic,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  if (node.children.isNotEmpty)
-                                                    Icon(
-                                                      controller.expandedNodes
-                                                              .contains(node)
-                                                          ? Icons
-                                                              .keyboard_arrow_down
-                                                          : Icons
-                                                              .keyboard_arrow_right,
-                                                      size: 24,
-                                                      color: Colors.blueAccent,
-                                                    )
-                                                  else
-                                                    height24,
-                                                  height8,
-                                                  CircleAvatar(
-                                                    radius: 18,
-                                                    backgroundColor: Colors
-                                                        .blueAccent
-                                                        .withOpacity(0.8),
-                                                    child: Text(
-                                                      node.label[0],
-                                                      style: AppTextstyle.text14
-                                                          .copyWith(
-                                                        fontSize:
-                                                            FontSizeManager
-                                                                .getFontSize(
-                                                                    context,
-                                                                    11),
-                                                        color: AppColors
-                                                            .whiteColor,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
+                                          }
+                                          controller.selectNode(node);
+                                        },
+                                        onLongPress: () {
+                                          _showNodeDetailsDialog(context, node);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
+                                          child: Row(
+                                            children: [
+                                              if (node.children.isNotEmpty)
+                                                Icon(
+                                                  controller.expandedNodes
+                                                          .contains(node)
+                                                      ? Icons
+                                                          .keyboard_arrow_down
+                                                      : Icons
+                                                          .keyboard_arrow_right,
+                                                  size: 24,
+                                                  color: Colors.blueAccent,
+                                                )
+                                              else
+                                                const SizedBox(width: 24),
+                                              width8,
+                                              CircleAvatar(
+                                                radius: 18,
+                                                backgroundColor: Colors
+                                                    .blueAccent
+                                                    .withOpacity(0.8),
+                                                child: Text(
+                                                  node.label[0],
+                                                  style: AppTextstyle.text14
+                                                      .copyWith(
+                                                    fontSize: FontSizeManager
+                                                        .getFontSize(
+                                                            context, 11),
+                                                    color: AppColors.whiteColor,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                  width12,
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      buildHighlightedText(
-                                                          node.label,
-                                                          controller.searchQuery
-                                                              .value),
-                                                      Text(
-                                                        node.accountId ??
-                                                            'No Account ID',
-                                                        style: AppTextstyle
-                                                            .text14
-                                                            .copyWith(
-                                                          fontSize:
-                                                              FontSizeManager
-                                                                  .getFontSize(
-                                                                      context,
-                                                                      10),
-                                                          color: controller
-                                                                  .searchedNodes
-                                                                  .contains(
-                                                                      node)
-                                                              ? Colors
-                                                                  .orangeAccent // or any highlight color
-                                                              : AppColors
-                                                                  .scaffoldColor,
-                                                          fontWeight: controller
-                                                                  .searchedNodes
-                                                                  .contains(
-                                                                      node)
-                                                              ? FontWeight.bold
-                                                              : FontWeight
-                                                                  .normal,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                ),
+                                              ),
+                                              width12,
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  buildHighlightedText(
+                                                      node.label,
+                                                      controller
+                                                          .searchQuery.value),
+                                                  Text(
+                                                    node.accountId ??
+                                                        'No Account ID',
+                                                    style: AppTextstyle.text14
+                                                        .copyWith(
+                                                      fontSize: FontSizeManager
+                                                          .getFontSize(
+                                                              context, 10),
+                                                      color: isSearched
+                                                          ? Colors.orangeAccent
+                                                          : AppColors
+                                                              .scaffoldColor,
+                                                      fontWeight: isSearched
+                                                          ? FontWeight.bold
+                                                          : FontWeight.normal,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -279,9 +274,7 @@ class NetworkScreen extends GetView<NetworkController> {
                             ),
                           ),
                         );
-                      }
-                    }),
-                  ),
+                      })),
                 ),
               ],
             ),

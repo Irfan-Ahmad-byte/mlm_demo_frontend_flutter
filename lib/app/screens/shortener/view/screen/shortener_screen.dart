@@ -27,7 +27,7 @@ class ShortenerScreen extends GetView<ShortenerController> {
               children: [
                 const ShortenIntroCard(),
                 height20,
-                const ShortenForm(),
+                  ShortenForm(),
                 height20,
                 const ShortenStatsCards(),
                 height20,
