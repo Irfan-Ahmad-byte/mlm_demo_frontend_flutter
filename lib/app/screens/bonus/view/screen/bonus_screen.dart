@@ -29,14 +29,14 @@ class BonusScreen extends GetView<BonusController> {
               children: [
                 /// 💰 Summary + Graph
                 if (ResponsiveWidget.isSmallScreen(context)) ...[
-                  const BonusSummaryCard(
+                    BonusSummaryCard(
                     amount: 2550,
                     monthlyIncrease: 120,
                   ),
                   height20,
                   const BonusGraphCard(),
                 ] else ...[
-                  const SizedBox(
+                    SizedBox(
                     height: 230,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,

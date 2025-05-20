@@ -26,6 +26,7 @@ class ApiClient {
 
   /// Helper: encodes a map into x-www-form-urlencoded
   String _encodeFormBody(Map<String, dynamic> data) {
+    if (data.isEmpty) return '';
     return data.entries
         .map((e) =>
             '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}')
@@ -75,7 +76,9 @@ class ApiClient {
           response = await http.post(
             url,
             headers: defaultHeaders,
-            body: useFormEncoding ? _encodeFormBody(body) : jsonEncode(body),
+            body: useFormEncoding
+                ? _encodeFormBody(body ?? {}) // 🛡️ prevent null crash
+                : utf8.encode(jsonEncode(body ?? {})),
           );
           break;
         case 'GET':
@@ -85,7 +88,9 @@ class ApiClient {
           response = await http.put(
             url,
             headers: defaultHeaders,
-            body: useFormEncoding ? _encodeFormBody(body) : jsonEncode(body),
+            body: useFormEncoding
+                ? _encodeFormBody(body ?? {}) // ✅ safely fallback to empty map
+                : utf8.encode(jsonEncode(body ?? {})),
           );
           break;
         case 'DELETE':
@@ -111,9 +116,7 @@ class ApiClient {
 
       /// Error handling
       final responseBody = jsonDecode(response.body);
-      final message = responseBody['detail'] ??
-          responseBody['message'] ??
-          'Something went wrong';
+      final message = _extractErrorMessage(responseBody);
 
       CustomSnackBar.show(message: message, backColor: AppColors.errorColor);
       return Future.error(message);
@@ -125,5 +128,17 @@ class ApiClient {
     } finally {
       CustomLoading.hide();
     }
+  }
+
+  String _extractErrorMessage(dynamic responseBody) {
+    if (responseBody is Map<String, dynamic>) {
+      final detail = responseBody['detail'];
+      if (detail is List && detail.isNotEmpty) {
+        return detail.first['msg'] ?? 'Validation error';
+      }
+      if (detail is String) return detail;
+      if (responseBody['message'] is String) return responseBody['message'];
+    }
+    return 'Something went wrong';
   }
 }

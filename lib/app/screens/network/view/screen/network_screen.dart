@@ -241,7 +241,7 @@ class NetworkScreen extends GetView<NetworkController> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   buildHighlightedText(
-                                                      node.label,
+                                                      'Level No #${node.label}',
                                                       controller
                                                           .searchQuery.value),
                                                   Text(

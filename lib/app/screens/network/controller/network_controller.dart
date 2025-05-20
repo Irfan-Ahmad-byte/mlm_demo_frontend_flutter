@@ -45,68 +45,7 @@ class NetworkController extends GetxController {
     searchedNodes.clear();
     treeController.collapseAll();
   }
-
-  // NetworkNode buildTree() {
-  //   return NetworkNode(
-  //     label: 'Root Node',
-  //     children: [
-  //       NetworkNode(
-  //         label: 'Child 1',
-  //         children: [
-  //           NetworkNode(
-  //             label: 'Grandchild 1.1',
-  //             accountId: '1234456545',
-  //           ),
-  //           NetworkNode(
-  //             label: 'Grandchild 1.2',
-  //             accountId: '1234456545',
-  //           ),
-  //         ],
-  //         accountId: '1234456545',
-  //       ),
-  //       NetworkNode(
-  //         label: 'Child 2',
-  //         children: [
-  //           NetworkNode(
-  //             label: 'Grandchild 2.1',
-  //             accountId: '1234456545',
-  //           ),
-  //         ],
-  //         accountId: '1234456545',
-  //       ),
-  //       NetworkNode(
-  //         label: 'Child 3',
-  //         children: [
-  //           NetworkNode(
-  //             label: 'Grandchild 3.1',
-  //             accountId: '1234456545',
-  //           ),
-  //           NetworkNode(
-  //             label: 'Grandchild 3.2',
-  //             accountId: '1234456545',
-  //           ),
-  //         ],
-  //         accountId: '1234456545',
-  //       ),
-  //       NetworkNode(
-  //         label: 'Child 4',
-  //         children: [
-  //           NetworkNode(
-  //             label: 'Grandchild 4.1',
-  //             accountId: '1234456545',
-  //           ),
-  //           NetworkNode(
-  //             label: 'Grandchild 4.2',
-  //             accountId: '1234456545',
-  //           ),
-  //         ],
-  //         accountId: '1234456545',
-  //       ),
-  //     ],
-  //     accountId: '1234456545',
-  //   );
-  // }
-
+ 
   void selectNode(NetworkNode node) {
     selectedNode.value = node;
   }

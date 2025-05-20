@@ -5,14 +5,18 @@ import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/custom_containe
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_colors.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_textstyle.dart';
+import 'package:mlm_demo_frontend_flutter/app/screens/bonus/controller/bonus_controller.dart';
+import 'package:get/get.dart';
 
 import '../../../core/utils/app_spaces.dart';
 
 class BonusSummaryCard extends StatelessWidget {
+  final controller = Get.put(BonusController());
+
   final double amount;
   final double monthlyIncrease;
 
-  const BonusSummaryCard({
+  BonusSummaryCard({
     super.key,
     required this.amount,
     required this.monthlyIncrease,
@@ -95,7 +99,9 @@ class BonusSummaryCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                InviteUserButton(onPressed: () {}),
+                InviteUserButton(onPressed: () {
+                  controller.distributeReferralBonus();
+                }),
                 height10,
                 Text(
                   'Invite Users to earn more',
