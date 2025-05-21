@@ -23,10 +23,10 @@ class BonusController extends GetxController {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // fetchUserRank(); // ✅ Called after build
-      // getBonusHistory();
+      getBonusHistory();
       // listBonus();
       // bonusPayAll();
-      fetchWeeklyReport();
+      // fetchWeeklyReport();
     });
   }
 

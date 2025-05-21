@@ -54,23 +54,21 @@ class BonusScreen extends GetView<BonusController> {
                 const BonusBreakdownCard(),
 
                 /// 📜 Timeline for Mobile
-                BonusHistoryTable(
-                  entries: [
-                    BonusHistoryEntry(
-                        date: "2025-05-01",
-                        source: "User123",
-                        level: 2,
-                        amount: 120.0,
-                        status: "Paid"),
-                    BonusHistoryEntry(
-                        date: "2025-05-02",
-                        source: "User456",
-                        level: 3,
-                        amount: 75.0,
-                        status: "Pending"),
-                    // Add more entries
-                  ],
-                )
+                Obx(() {
+                  print(
+                      "♻️ UI rebuilding with ${controller.bonusHistory.length} entries");
+                  return BonusHistoryTable(
+                    entries: controller.bonusHistory.map((entry) {
+                      return BonusHistoryEntry(
+                        date: entry.createdAt?.split("T").first ?? "N/A",
+                        source: entry.id ?? "Unknown",
+                        level: entry.level ?? 0,
+                        amount: entry.amount ?? 0.0,
+                        status: entry.status ?? "Unknown",
+                      );
+                    }).toList(),
+                  );
+                })
               ],
             ),
           ),

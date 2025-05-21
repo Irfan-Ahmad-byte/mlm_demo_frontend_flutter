@@ -16,15 +16,20 @@ class BonusHistoryTable extends StatefulWidget {
 }
 
 class _BonusHistoryTableState extends State<BonusHistoryTable> {
-  late List<BonusHistoryEntry> _sortedEntries;
+  List<BonusHistoryEntry> _sortedEntries = [];
   String _sortKey = 'date';
   bool _isAscending = false;
 
   @override
-  void initState() {
-    super.initState();
-    _sortedEntries = List.from(widget.entries);
-    _sortEntries();
+  void didUpdateWidget(covariant BonusHistoryTable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.entries != oldWidget.entries) {
+      setState(() {
+        _sortedEntries = List.from(widget.entries);
+        _sortEntries();
+      });
+    }
   }
 
   void _sortEntries() {
