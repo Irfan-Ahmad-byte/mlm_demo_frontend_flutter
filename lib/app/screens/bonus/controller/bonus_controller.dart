@@ -26,7 +26,7 @@ class BonusController extends GetxController {
       getBonusHistory();
       // listBonus();
       // bonusPayAll();
-      // fetchWeeklyReport();
+      fetchWeeklyReport();
     });
   }
 

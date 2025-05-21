@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_spaces.dart';
+import 'package:mlm_demo_frontend_flutter/app/screens/bonus/components/weekly_report.dart';
 import '../../components/bonus_history_table.dart';
-import '../../components/bonus_breakdown_card.dart';
 import '../../components/bonus_graph_card.dart';
 import '../../components/bonus_summary_card.dart';
 import '../../controller/bonus_controller.dart';
@@ -51,7 +51,17 @@ class BonusScreen extends GetView<BonusController> {
                 height20,
 
                 /// 📊 Breakdown + Timeline
-                const BonusBreakdownCard(),
+                Obx(() {
+                  final report = controller.weeklyReport.value;
+
+                  if (report == null) return const CircularProgressIndicator();
+
+                  return WeeklyBonusReportWidget(
+                    totalBonus: report.totalBonus ?? 0,
+                    count: report.count ?? 0,
+                    bonuses: report.bonuses ?? [],
+                  );
+                }),
 
                 /// 📜 Timeline for Mobile
                 Obx(() {
