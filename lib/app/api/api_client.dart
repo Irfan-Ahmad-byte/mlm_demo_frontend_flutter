@@ -47,10 +47,11 @@ class ApiClient {
       /// Default headers
       final defaultHeaders = {
         'Accept': 'application/json',
-        if (useFormEncoding)
-          'Content-Type': 'application/x-www-form-urlencoded'
-        else
-          'Content-Type': 'application/json',
+        if (method.toUpperCase() != 'GET')
+          if (useFormEncoding)
+            'Content-Type': 'application/x-www-form-urlencoded'
+          else
+            'Content-Type': 'application/json',
       };
 
       /// Add token if available
@@ -58,6 +59,13 @@ class ApiClient {
       if (token != null && token.isNotEmpty) {
         defaultHeaders['Authorization'] = 'Bearer $token';
       }
+      // Map<String, dynamic> _safeJsonDecode(String body) {
+      //   try {
+      //     return jsonDecode(body);
+      //   } catch (_) {
+      //     return {"message": body}; // fallback: plain text as message
+      //   }
+      // }
 
       /// Merge user-provided headers
       if (headers != null) {
@@ -102,7 +110,8 @@ class ApiClient {
 
       /// Debug
       debugPrint(
-          "\u27a1️ [${method.toUpperCase()}] $url\nStatus: ${response.statusCode}\nBody: ${response.body}");
+          "\u27a1️ [${method.toUpperCase()}] $url\nStatus: ${response.statusCode}");
+      // \nBody: ${response.body}
 
       /// Success
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -115,7 +124,13 @@ class ApiClient {
       }
 
       /// Error handling
-      final responseBody = jsonDecode(response.body);
+      late dynamic responseBody;
+      try {
+        responseBody = jsonDecode(response.body);
+      } catch (_) {
+        responseBody = {"message": response.body}; // fallback
+      }
+
       final message = _extractErrorMessage(responseBody);
 
       CustomSnackBar.show(message: message, backColor: AppColors.errorColor);

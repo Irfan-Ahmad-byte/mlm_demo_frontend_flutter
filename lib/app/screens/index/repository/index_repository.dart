@@ -7,7 +7,7 @@ class IndexRepository extends ApiClient {
       return await apiClientRequest(
         endPoint: kGetMe,
         method: "GET",
-        headers: headers, // ✅ Full headers map
+        // headers: headers, // ✅ Full headers map
       );
     } catch (error) {
       rethrow;
