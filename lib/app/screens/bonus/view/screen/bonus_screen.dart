@@ -3,7 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_spaces.dart';
+import 'package:mlm_demo_frontend_flutter/app/screens/bonus/components/list_bonus.dart';
 import 'package:mlm_demo_frontend_flutter/app/screens/bonus/components/weekly_report.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_textstyle.dart';
 import '../../components/bonus_history_table.dart';
 import '../../components/bonus_graph_card.dart';
 import '../../components/bonus_summary_card.dart';
@@ -47,7 +50,46 @@ class BonusScreen extends GetView<BonusController> {
                     ),
                   ),
                 ],
+                Obx(() {
+                  final list = controller.bonusList;
 
+                  if (list.isEmpty) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'BONUSES List',
+                        style: AppTextstyle.text14.copyWith(
+                          fontSize: FontSizeManager.getFontSize(context, 16),
+                          color: AppColors.secondaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      height16,
+                      ...list.map((bonus) {
+                        final level = 'Level ${bonus.level}';
+                        final type = bonus.type ?? '';
+                        final date =
+                            bonus.createdAt?.split('T').first ?? 'Unknown';
+                        final amount = '\$${bonus.amount}';
+                        final statusColor = bonus.status == 'paid'
+                            ? Colors.greenAccent
+                            : Colors.orangeAccent;
+
+                        return BonusCard(
+                          level: level,
+                          type: type,
+                          date: date,
+                          amount: amount,
+                          statusColor: statusColor,
+                        );
+                      }).toList(),
+                    ],
+                  );
+                }),
                 height20,
 
                 /// 📊 Breakdown + Timeline
