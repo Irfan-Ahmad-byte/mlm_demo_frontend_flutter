@@ -16,8 +16,9 @@ class BonusSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isSmall = ResponsiveWidget.isSmallScreen(context);
+
     return CustomContainer(
-      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 20.h),
       border: Border(
         left: BorderSide(
           color: AppColors.secondaryColor,
@@ -25,97 +26,156 @@ class BonusSummaryCard extends StatelessWidget {
         ),
       ),
       width: double.infinity,
-      child: Row(
-        children: [
-          width10,
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Column(
+      child: isSmall
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'TOTAL BONUS',
-                  style: AppTextstyle.text14.copyWith(
-                    fontSize: FontSizeManager.getFontSize(context, 14),
-                    color: AppColors.secondaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
                 height10,
-                AnimatedFlipCounter(
-                  duration: const Duration(milliseconds: 700),
-                  value: 20,
-                  prefix: '\$',
-                  fractionDigits: 0,
-                  textStyle: AppTextstyle.text14.copyWith(
-                    fontSize: FontSizeManager.getFontSize(context, 28),
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.whiteColor,
-                  ),
-                ),
+                _buildTotalSection(context, isSmall),
                 height10,
-                DistributeBonusButton(onPressed: () {
-                  controller.distributeReferralBonus();
-                })
+                DistributeBonusButton(
+                  title: 'Distribute Bonuses',
+                  onPressed: () {
+                    controller.distributeReferralBonus();
+                  },
+                ),
+                height6,
+                DistributeBonusButton(
+                  title: 'Pay All',
+                  onPressed: () {
+                    controller.bonusPayAll();
+                  },
+                ),
               ],
-            ),
-          ),
-          if (ResponsiveWidget.isLargeScreen(context)) ...[
-            width10,
-            Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.orange.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.center, // 🔥 key fix
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // 🧾 Left Side – Bonus Info
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'Current Rank: ',
-                      style: AppTextstyle.text14.copyWith(
-                        fontSize: FontSizeManager.getFontSize(context, 12),
-                        color: Colors.orangeAccent,
-                        fontWeight: FontWeight.w600,
+                    width10,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'TOTAL BONUS',
+                          style: AppTextstyle.text14.copyWith(
+                            fontSize: FontSizeManager.getFontSize(context, 14),
+                            color: AppColors.secondaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        height4,
+                        AnimatedFlipCounter(
+                          duration: const Duration(milliseconds: 700),
+                          value: 20,
+                          prefix: '\$',
+                          fractionDigits: 0,
+                          textStyle: AppTextstyle.text14.copyWith(
+                            fontSize: FontSizeManager.getFontSize(context, 28),
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.whiteColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    width20,
+                    // 🎖 Rank Badge
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                      decoration: BoxDecoration(
+                        color: Colors.brown.shade800,
+                        borderRadius: BorderRadius.circular(18.r),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Current Rank:',
+                            style: AppTextstyle.text14.copyWith(
+                              fontSize:
+                                  FontSizeManager.getFontSize(context, 12),
+                              color: Colors.orangeAccent,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            'Bronze',
+                            style: AppTextstyle.text14.copyWith(
+                              fontSize:
+                                  FontSizeManager.getFontSize(context, 12),
+                              color: Colors.greenAccent,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Text(
-                      'Bronze',
-                      style: AppTextstyle.text14.copyWith(
-                        fontSize: FontSizeManager.getFontSize(context, 12),
-                        color: Colors.greenAccent,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    )
-                    // CustomRichText(
-                    //   text1: 'Current Rank: ',
-                    //   text2: 'Bronze',
-                    //   maxLines: 2,
-                    //   overflow: TextOverflow.ellipsis,
-                    //   style1: AppTextstyle.text14.copyWith(
-                    //     fontSize: FontSizeManager.getFontSize(context, 12),
-                    //     color: Colors.orangeAccent,
-                    //     fontWeight: FontWeight.w600,
-                    //   ),
-                    //   style2: AppTextstyle.text14.copyWith(
-                    //     fontSize: FontSizeManager.getFontSize(context, 12),
-                    //     color: Colors.greenAccent,
-                    //     fontWeight: FontWeight.w700,
-                    //   ),
-                    // ),
                   ],
-                )),
-          ]
-        ],
-      ),
+                ),
+
+                // 🟡 Buttons Side
+                DistributeBonusButton(
+                  title: 'Distribute Bonuses',
+                  onPressed: () {
+                    controller.distributeReferralBonus();
+                  },
+                ),
+                width10,
+                DistributeBonusButton(
+                  title: 'Pay All',
+                  onPressed: () {
+                    controller.bonusPayAll();
+                  },
+                ),
+              ],
+            ),
+    );
+  }
+
+  Widget _buildTotalSection(BuildContext context, bool isSmall) {
+    return Column(
+      crossAxisAlignment:
+          isSmall ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      mainAxisAlignment:
+          isSmall ? MainAxisAlignment.center : MainAxisAlignment.start,
+      children: [
+        Text(
+          'TOTAL BONUS',
+          style: AppTextstyle.text14.copyWith(
+            fontSize: FontSizeManager.getFontSize(context, 14),
+            color: AppColors.secondaryColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        height10,
+        AnimatedFlipCounter(
+          duration: const Duration(milliseconds: 700),
+          value: 20,
+          prefix: '\$',
+          fractionDigits: 0,
+          textStyle: AppTextstyle.text14.copyWith(
+            fontSize: FontSizeManager.getFontSize(context, 28),
+            fontWeight: FontWeight.bold,
+            color: AppColors.whiteColor,
+          ),
+        ),
+      ],
     );
   }
 }
 
 class DistributeBonusButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final String title;
 
-  const DistributeBonusButton({super.key, required this.onPressed});
+  const DistributeBonusButton(
+      {super.key, required this.onPressed, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +183,7 @@ class DistributeBonusButton extends StatelessWidget {
       onPressed: onPressed,
       icon: const Icon(Icons.payments_outlined, size: 20, color: Colors.white),
       label: Text(
-        'Distribute Bonuses',
+        title,
         style: AppTextstyle.text14.copyWith(
           fontSize: FontSizeManager.getFontSize(context, 12),
           color: Colors.white,
@@ -132,7 +192,7 @@ class DistributeBonusButton extends StatelessWidget {
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.secondaryColor,
-        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.h),
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),

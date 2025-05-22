@@ -8,6 +8,7 @@ import '../../../api/api_preference.dart';
 import '../../../core/custom_widget/custom_snackbar.dart';
 import '../../../core/custom_widget/loading.dart';
 import '../../../core/utils/app_colors.dart';
+import '../components/bonus_detail_dialog.dart';
 import '../models/bonus_list_model.dart';
 import '../models/weekly_report_model.dart';
 
@@ -265,11 +266,26 @@ class BonusController extends GetxController {
 
       if (response != null && response is Map<String, dynamic>) {
         final msg = response['message']?.toString() ?? "Bonus marked as paid";
+        Get.log(msg);
         markPaid.value = Markpaid.fromJson(response);
-        CustomSnackBar.show(
-          message: msg,
-          backColor: AppColors.lightGreen,
-        );
+        if (markPaid.value != null) {
+          showBonusDetailDialog(Get.context!, {
+            "id": markPaid.value!.id,
+            "user_id": markPaid.value!.userId,
+            "source_user_id": markPaid.value!.sourceUserId,
+            "level": markPaid.value!.level,
+            "amount": markPaid.value!.amount,
+            "type": markPaid.value!.type,
+            "status": markPaid.value!.status,
+            "created_at":
+                markPaid.value!.createdAt?.split("T").first ?? "Unknown",
+          });
+        }
+
+        // CustomSnackBar.show(
+        //   message: msg,
+        //   backColor: AppColors.lightGreen,
+        // );
       } else {
         CustomSnackBar.show(
           message: "Unexpected response format",

@@ -8,7 +8,6 @@ import 'package:mlm_demo_frontend_flutter/app/screens/bonus/components/weekly_re
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_textstyle.dart';
 import '../../components/bonus_history_table.dart';
-import '../../components/bonus_graph_card.dart';
 import '../../components/bonus_summary_card.dart';
 import '../../controller/bonus_controller.dart';
 
@@ -31,25 +30,7 @@ class BonusScreen extends GetView<BonusController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// 💰 Summary + Graph
-                if (ResponsiveWidget.isSmallScreen(context)) ...[
-                  BonusSummaryCard(),
-                  height20,
-                  const BonusGraphCard(),
-                ] else ...[
-                  SizedBox(
-                    height: 230,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: BonusSummaryCard(),
-                        ),
-                        VerticalDivider(),
-                        Expanded(child: BonusGraphCard()),
-                      ],
-                    ),
-                  ),
-                ],
+                BonusSummaryCard(),
                 Obx(() {
                   final list = controller.bonusList;
 
@@ -85,8 +66,11 @@ class BonusScreen extends GetView<BonusController> {
                           date: date,
                           amount: amount,
                           statusColor: statusColor,
+                          onMarkPaid: () {
+                            controller.markBonusAsPaid(bonusId: bonus.id!);
+                          },
                         );
-                      }).toList(),
+                      }),
                     ],
                   );
                 }),
@@ -107,8 +91,6 @@ class BonusScreen extends GetView<BonusController> {
 
                 /// 📜 Timeline for Mobile
                 Obx(() {
-                  print(
-                      "♻️ UI rebuilding with ${controller.bonusHistory.length} entries");
                   return BonusHistoryTable(
                     entries: controller.bonusHistory.map((entry) {
                       return BonusHistoryEntry(
