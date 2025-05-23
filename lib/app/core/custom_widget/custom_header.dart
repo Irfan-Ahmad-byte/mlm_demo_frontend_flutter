@@ -256,12 +256,12 @@ Widget userInfoText(
     color: AppColors.primaryDarkColor,
     itemBuilder: (context) => [
       PopupMenuItem(
-        value: 'profile',
+        value: 'logout',
         child: Row(
           children: [
             Icon(Icons.person, color: AppColors.whiteColor, size: 18),
             SizedBox(width: 8),
-            Text("Profile", style: TextStyle(color: AppColors.whiteColor)),
+            Text("Root", style: TextStyle(color: AppColors.whiteColor)),
           ],
         ),
       ),

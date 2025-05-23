@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:mlm_demo_frontend_flutter/app/api/api_preference.dart';
+import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/custom_snackbar.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_spaces.dart';
 import 'package:mlm_demo_frontend_flutter/app/screens/bonus/components/list_bonus.dart';
@@ -12,7 +14,10 @@ import '../../components/bonus_summary_card.dart';
 import '../../controller/bonus_controller.dart';
 
 class BonusScreen extends GetView<BonusController> {
-  const BonusScreen({super.key});
+  final controller = Get.put(BonusController());
+
+  final userId = ApiPreference.getUserId;
+  BonusScreen({super.key});
 
   static bool isMobileOrCustomScreen(BuildContext context) {
     return ResponsiveWidget.isSmallScreen(context) ||
@@ -28,51 +33,69 @@ class BonusScreen extends GetView<BonusController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// 💰 Summary Card
-            BonusSummaryCard(),
+            BonusSummaryCard(
+              rank: controller.userRank.value.isNotEmpty
+                  ? controller.userRank.value.split(":").last
+                  : 'Not Available',
+              onDist: () {
+                controller.distributeReferralBonus();
+              },
+              onPayall: () {
+                if (userId == '669dcb94-cf4d-448b-8fb6-7dcd0ef84d9b') {
+                  controller.bonusPayAll();
+                } else {
+                  CustomSnackBar.show(
+                      backColor: AppColors.errorColor,
+                      message: "You Need To be Root User For this");
+                }
+              },
+            ),
 
             /// 💸 Bonuses List
-            Obx(() {
-              final list = controller.bonusList;
+            if (userId == '669dcb94-cf4d-448b-8fb6-7dcd0ef84d9b')
+              Obx(() {
+                final list = controller.bonusList;
 
-              if (list.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
-              }
+                if (list.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'BONUSES List',
-                    style: AppTextstyle.text14.copyWith(
-                      fontSize: FontSizeManager.getFontSize(context, 16),
-                      color: AppColors.secondaryColor,
-                      fontWeight: FontWeight.bold,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'BONUSES List',
+                      style: AppTextstyle.text14.copyWith(
+                        fontSize: FontSizeManager.getFontSize(context, 16),
+                        color: AppColors.secondaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  height16,
-                  ...list.map((bonus) {
-                    final level = 'Level ${bonus.level}';
-                    final type = bonus.type ?? '';
-                    final date = bonus.createdAt?.split('T').first ?? 'Unknown';
-                    final amount = '\$${bonus.amount}';
-                    final statusColor = bonus.status == 'paid'
-                        ? Colors.greenAccent
-                        : Colors.orangeAccent;
+                    height16,
+                    ...list.map((bonus) {
+                      final level = 'Level ${bonus.level}';
+                      final type = bonus.type ?? '';
+                      final date =
+                          bonus.createdAt?.split('T').first ?? 'Unknown';
+                      final amount = '\$${bonus.amount}';
+                      final statusColor = bonus.status == 'paid'
+                          ? Colors.greenAccent
+                          : Colors.orangeAccent;
 
-                    return BonusCard(
-                      level: level,
-                      type: type,
-                      date: date,
-                      amount: amount,
-                      statusColor: statusColor,
-                      onMarkPaid: () {
-                        controller.markBonusAsPaid(bonusId: bonus.id!);
-                      },
-                    );
-                  }),
-                ],
-              );
-            }),
+                      return BonusCard(
+                        level: level,
+                        type: type,
+                        date: date,
+                        amount: amount,
+                        statusColor: statusColor,
+                        onMarkPaid: () {
+                          controller.markBonusAsPaid(bonusId: bonus.id!);
+                        },
+                      );
+                    }),
+                  ],
+                );
+              }),
             height20,
 
             /// 📊 Weekly Bonus Report

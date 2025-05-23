@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/custom_container.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/custom_widget/responsive_widget.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_colors.dart';
 import 'package:mlm_demo_frontend_flutter/app/core/utils/app_textstyle.dart';
-import 'package:mlm_demo_frontend_flutter/app/screens/bonus/controller/bonus_controller.dart';
 import '../../../core/utils/app_spaces.dart';
 
 class BonusSummaryCard extends StatelessWidget {
-  final controller = Get.put(BonusController());
-
-  BonusSummaryCard({super.key});
+  final VoidCallback onDist, onPayall;
+  final String rank;
+  const BonusSummaryCard(
+      {super.key,
+      required this.onDist,
+      required this.onPayall,
+      required this.rank});
 
   @override
   Widget build(BuildContext context) {
@@ -35,18 +37,17 @@ class BonusSummaryCard extends StatelessWidget {
                 _buildTotalSection(context, isSmall),
                 height10,
                 DistributeBonusButton(
-                  title: 'Distribute Bonuses',
-                  onPressed: () {
-                    controller.distributeReferralBonus();
-                  },
-                ),
+                    title: 'Distribute Bonuses', onPressed: onDist
+                    //  () {
+                    //   controller.distributeReferralBonus();
+                    // },
+                    ),
                 height6,
-                DistributeBonusButton(
-                  title: 'Pay All',
-                  onPressed: () {
-                    controller.bonusPayAll();
-                  },
-                ),
+                DistributeBonusButton(title: 'Pay All', onPressed: onPayall
+                    //  () {
+                    //   controller.bonusPayAll();
+                    // },
+                    ),
               ],
             )
           : Row(
@@ -96,7 +97,7 @@ class BonusSummaryCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            controller.userRank.value.split(":").first,
+                            "Current Rank:",
                             style: AppTextstyle.text14.copyWith(
                               fontSize:
                                   FontSizeManager.getFontSize(context, 12),
@@ -105,7 +106,8 @@ class BonusSummaryCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            controller.userRank.value.split(":").last,
+                            rank,
+                            // controller.userRank.value.split(":").last,
                             style: AppTextstyle.text14.copyWith(
                               fontSize:
                                   FontSizeManager.getFontSize(context, 12),
@@ -121,18 +123,17 @@ class BonusSummaryCard extends StatelessWidget {
 
                 // 🟡 Buttons Side
                 DistributeBonusButton(
-                  title: 'Distribute Bonuses',
-                  onPressed: () {
-                    controller.distributeReferralBonus();
-                  },
-                ),
+                    title: 'Distribute Bonuses', onPressed: onDist
+                    //  () {
+                    //   controller.distributeReferralBonus();
+                    // },
+                    ),
                 width10,
-                DistributeBonusButton(
-                  title: 'Pay All',
-                  onPressed: () {
-                    controller.bonusPayAll();
-                  },
-                ),
+                DistributeBonusButton(title: 'Pay All', onPressed: onPayall
+                    //  () {
+                    //   controller.bonusPayAll();
+                    // },
+                    ),
               ],
             ),
     );

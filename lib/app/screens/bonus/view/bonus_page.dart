@@ -16,7 +16,7 @@ class BonusPage extends StatelessWidget {
         body: SizedBox(
           height: size.height,
           width: size.width,
-          child: const ResponsiveWidget(
+          child: ResponsiveWidget(
             largescreen: BonusScreen(),
             mediumscreen: BonusScreen(),
             smallscreen: BonusScreen(),
