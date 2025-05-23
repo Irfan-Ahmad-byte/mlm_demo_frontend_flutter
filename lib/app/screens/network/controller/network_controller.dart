@@ -45,7 +45,7 @@ class NetworkController extends GetxController {
     searchedNodes.clear();
     treeController.collapseAll();
   }
- 
+
   void selectNode(NetworkNode node) {
     selectedNode.value = node;
   }
@@ -134,8 +134,14 @@ class NetworkController extends GetxController {
   void expandParents(NetworkNode targetNode) {
     void recursiveExpand(NetworkNode currentNode) {
       if (currentNode.children.contains(targetNode)) {
-        treeController.expand(currentNode); // expand this parent
-        expandParents(currentNode); // keep going upwards
+        treeController.expand(currentNode);
+
+        // ✅ FIX: safely add to expandedNodes
+        Future.microtask(() {
+          expandedNodes.add(currentNode);
+        });
+
+        expandParents(currentNode);
       } else {
         for (final child in currentNode.children) {
           recursiveExpand(child);
@@ -179,9 +185,10 @@ class NetworkController extends GetxController {
         return;
       }
 
-      final downlines = await networkRepository.getDownline({
+      downlines.clear();
+      downlines.addAll(await networkRepository.getDownline({
         "token": accessToken.toString(),
-      });
+      }));
 
       if (downlines.isNotEmpty) {
         /// Convert each DownlineModel to NetworkNode
@@ -208,6 +215,8 @@ class NetworkController extends GetxController {
           [],
     );
   }
+
+  final List<DownlineModel> downlines = [];
 
   NetworkNode convertChildToNode(Children child) {
     return NetworkNode(

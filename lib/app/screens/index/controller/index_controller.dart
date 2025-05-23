@@ -121,9 +121,7 @@ class IndexController extends GetxController {
         return;
       }
 
-      final response = await indexRepository.getMe({
-        "token": accessToken.toString(),
-      });
+      final response = await indexRepository.getMe(accessToken.toString());
 
       if (response != null && response['email'] != null) {
         Get.log("User info: $response");

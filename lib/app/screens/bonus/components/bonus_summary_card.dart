@@ -96,7 +96,7 @@ class BonusSummaryCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Current Rank:',
+                            controller.userRank.value.split(":").first,
                             style: AppTextstyle.text14.copyWith(
                               fontSize:
                                   FontSizeManager.getFontSize(context, 12),
@@ -105,7 +105,7 @@ class BonusSummaryCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Bronze',
+                            controller.userRank.value.split(":").last,
                             style: AppTextstyle.text14.copyWith(
                               fontSize:
                                   FontSizeManager.getFontSize(context, 12),

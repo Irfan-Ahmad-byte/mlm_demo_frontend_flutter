@@ -16,7 +16,7 @@ class DashboardPage extends StatelessWidget {
         body: SizedBox(
           height: size.height,
           width: size.width,
-          child: const ResponsiveWidget(
+          child:   ResponsiveWidget(
             largescreen: DashboardScreen(),
             mediumscreen: DashboardScreen(),
             smallscreen: DashboardScreen(),

@@ -11,6 +11,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // ✅ Use a safe local path instead of OneDrive's Documents
+  // Get.put(DashboardController(), permanent: true);
+  // Get.put(NetworkController(), permanent: true);
+  // Get.put(IndexController(), permanent: true);
 
   await Get.putAsync(() => InitialSettingServices().init());
   await GetStorage.init();

@@ -26,15 +26,15 @@ class BonusButtons extends StatelessWidget {
       final selected = layoutController.selectedBonusTab.value;
 
       final defaultButtons = [
-        {'title': "Bonus", 'key': 'bonus', 'amount': "1000"},
-        {'title': "Shortener", 'key': 'shortener', 'amount': "500"},
-        {'title': "Dashboard", 'key': 'dashboard', 'amount': "2000"},
+        {'title': "Bonus", 'key': 'bonus', 'amount': ""},
+        {'title': "Shortener", 'key': 'shortener', 'amount': ""},
+        {'title': "Dashboard", 'key': 'dashboard', 'amount': ""},
       ];
 
       final networkButton = {
         'title': "Network",
         'key': 'network',
-        'amount': "9999"
+        'amount': ""
       };
 
       // Filter based on selected tab

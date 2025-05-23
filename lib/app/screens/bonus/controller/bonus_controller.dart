@@ -22,13 +22,16 @@ class BonusController extends GetxController {
   void onInit() {
     super.onInit();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // fetchUserRank(); // ✅ Called after build
-      getBonusHistory();
-      listBonus();
-      // bonusPayAll();
-      fetchWeeklyReport();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _fetchAll();
     });
+  }
+
+  void _fetchAll() {
+    getBonusHistory();
+    listBonus();
+    fetchWeeklyReport();
+    fetchUserRank();
   }
 
   void distributeReferralBonus() async {
@@ -36,7 +39,6 @@ class BonusController extends GetxController {
     CustomLoading.show();
 
     final userID = ApiPreference.getUserId;
-    print(userID);
 
     try {
       final response = await bonusRepository.bonusDistribute(body: {
@@ -74,12 +76,12 @@ class BonusController extends GetxController {
       if (response != null && response is List) {
         bonusList.value =
             response.map((item) => BonusListModel.fromJson(item)).toList();
-        print(bonusList.length);
+        Get.log(bonusList.length.toString());
 
-        CustomSnackBar.show(
-          message: "Bonus listed successfully",
-          backColor: AppColors.lightGreen,
-        );
+        // CustomSnackBar.show(
+        //   message: "Bonus listed successfully",
+        //   backColor: AppColors.lightGreen,
+        // );
       } else {
         final detail = response?['detail'] ?? "Bonus listing failed";
         CustomSnackBar.show(
@@ -100,8 +102,7 @@ class BonusController extends GetxController {
   }
 
   final RxList<BonusHistoryModel> bonusHistory = <BonusHistoryModel>[].obs;
-  // RxList<WithdrawHistoryData> bonusHistory =
-  //     RxList<WithdrawHistoryData>([]);
+
   Future<void> getBonusHistory() async {
     try {
       final token = await ApiPreference.getApiToken;
@@ -120,9 +121,12 @@ class BonusController extends GetxController {
       });
 
       if (response != null && response is List) {
-        bonusHistory.value =
-            response.map((item) => BonusHistoryModel.fromJson(item)).toList();
-        print("✅ Loaded bonus history: ${bonusHistory.length} items");
+        bonusHistory.value = response
+            .whereType<Map<String, dynamic>>()
+            .map((item) => BonusHistoryModel.fromJson(item))
+            .toList();
+        // print("Bonus History length ${bonusHistory.length}");
+        // ❌ No update() needed here
       } else {
         Get.log("⚠️ Unexpected response: $response");
       }
@@ -189,13 +193,13 @@ class BonusController extends GetxController {
       if (response != null && response is Map<String, dynamic>) {
         weeklyReport.value = WeeklyReportModel.fromJson(response);
 
-        print(
-            "✅ Weekly Report loaded: ${weeklyReport.value?.totalBonus} bonus");
+        // print(
+        //     "✅ Weekly Report loaded: ${weeklyReport.value?.totalBonus} bonus");
 
-        CustomSnackBar.show(
-          message: "Weekly report loaded",
-          backColor: AppColors.lightGreen,
-        );
+        // CustomSnackBar.show(
+        //   message: "Weekly report loaded",
+        //   backColor: AppColors.lightGreen,
+        // );
       } else {
         CustomSnackBar.show(
           message: "Invalid response format",
@@ -235,7 +239,7 @@ class BonusController extends GetxController {
         'accept': 'application/json', // optional but curl has it
       });
       userRank.value = response["message"];
-      print(userRank.value);
+      // print(userRank.value);
       // print("✅ User Rank Response: $response");
     } catch (e) {
       Get.log("❌ Error fetching user rank: $e");
@@ -302,5 +306,12 @@ class BonusController extends GetxController {
       isLoading.value = false;
       CustomLoading.hide();
     }
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    // Clean up resources
+    print("BonusController destroyed ✅");
   }
 }
